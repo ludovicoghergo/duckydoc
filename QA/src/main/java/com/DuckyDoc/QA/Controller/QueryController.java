@@ -42,7 +42,7 @@ public class QueryController {
         List<Query> queries = new ArrayList<>();
         repository.findAll().forEach(queries::add);
 
-        for(int i = 0; i < queries.size(); i++){
+        for (int i = 0; i < queries.size(); i++) {
             queries.get(i).setAnswers(null);
         }
 
@@ -54,7 +54,7 @@ public class QueryController {
         System.out.println("Get user Queries...");
         List<Query> queries = repository.findByUserId(id_user);
 
-        for(int i = 0; i < queries.size(); i++){
+        for (int i = 0; i < queries.size(); i++) {
             queries.get(i).setAnswers(null);
         }
 
@@ -70,7 +70,7 @@ public class QueryController {
             Query _query = query.get();
 
             List<Answer> answers = _query.getAnswers();
-            for(int i = 0; i < answers.size(); i++){
+            for (int i = 0; i < answers.size(); i++) {
                 answers.get(i).setQuery(null);
             }
 
@@ -81,7 +81,7 @@ public class QueryController {
     }
 
     @GetMapping(value = "queries/find/{key}")
-    public List<Query> findByText(@PathVariable String key){
+    public List<Query> findByText(@PathVariable String key) {
         List<Query> queries = repository.findByTextContaining(key);
         return queries;
     }
@@ -92,7 +92,7 @@ public class QueryController {
         return query;
     }
 
-    //UTILE??
+    // UTILE??
     @DeleteMapping("/queries/delete/{id}")
     public ResponseEntity<String> deleteQuery(@PathVariable("id") long id) {
         System.out.println("Delete Query with ID = " + id + "...");
@@ -101,7 +101,7 @@ public class QueryController {
         return new ResponseEntity<>("Query has been deleted!", HttpStatus.OK);
     }
 
-    //UTILE??
+    // UTILE??
     @DeleteMapping("/queries/delete")
     public ResponseEntity<String> deleteAllQueries() {
         System.out.println("Delete All Queries...");
@@ -110,7 +110,7 @@ public class QueryController {
         return new ResponseEntity<>("All Queries have been deleted!", HttpStatus.OK);
     }
 
-    //UTILE??
+    // UTILE??
     @PutMapping("/queries/setText/{id}")
     public ResponseEntity<Query> updateQuery(@PathVariable("id") long id, @RequestBody String newText) {
         System.out.println("Update Query with ID = " + id + "...");
