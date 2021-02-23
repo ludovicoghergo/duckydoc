@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  dbutenti:
+    image: postgres
+    ports:
+      - "5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: Utenti
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      restart: always
+      
+  appUtenti:
+    build: .
+    image: appbootrest
+    container_name: appUtenti
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbutenti
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+       PGADMIN_DEFAULT_EMAIL: mattia98779@gmail.com
+       PGADMIN_DEFAULT_PASSWORD: admin
+       PGADMIN_LISTEN_PORT: 50
+    ports:
+       - "5050:50"
+    volumes:
+       - pgadmin-data:/var/lib/pgadmin
+    links:
+      - "dbutenti:pgsql-server"
+
+volumes:
+  db-data:
+  pgadmin-data:

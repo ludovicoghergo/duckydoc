@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  dbQA:
+    image: postgres
+    ports:
+      - "5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: QueryPostgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      restart: unless-stopped
+      
+  app:
+    build: .
+    image: appbootrest
+    container_name: appQA
+    ports:
+      - "8082:8080"
+    depends_on:
+      - dbQA
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+       PGADMIN_DEFAULT_EMAIL: mattia98779@gmail.com
+       PGADMIN_DEFAULT_PASSWORD: admin
+       PGADMIN_LISTEN_PORT: 52
+    ports:
+       - "5052:52"
+    volumes:
+       - pgadmin-data:/var/lib/pgadmin
+    links:
+      - "dbQA:pgsql-server"
+
+volumes:
+  db-data:
+  pgadmin-data:

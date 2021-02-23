@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DocumentFilter">
+
+    <EditText
+        android:id="@+id/txtFiltroTitolo"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/titolo"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/txtFiltroUniversita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/universit"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltroTitolo"
+        app:layout_constraintStart_toStartOf="@+id/txtFiltroTitolo"
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltroTitolo"
+        tools:hint="@string/universit"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/txtFiltroCorso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/corso"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltroUniversita"
+        app:layout_constraintStart_toStartOf="@+id/txtFiltroUniversita"
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltroUniversita"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/anno"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/txtFiltroCorso"
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltroCorso" />
+
+    <Spinner
+        android:id="@+id/cmbFiltroAnno"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/years"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltroCorso"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/txtFiltroCorso" />
+
+    <Button
+        android:id="@+id/btMostra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/Button"
+        android:onClick="btMostra_Click"
+        android:text="@string/mostra_risultati"
+        app:layout_constraintEnd_toEndOf="@+id/txtFiltroCorso"
+        app:layout_constraintStart_toStartOf="@+id/txtFiltroCorso"
+        app:layout_constraintTop_toBottomOf="@+id/cmbFiltroAnno" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.duckydoc">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_duckydoc"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_duckydoc"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DuckyDoc"
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup">
+        <activity android:name=".NewReview"></activity>
+        <activity android:name=".lstReviewAdapter"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".SeeReviews" />
+        <activity android:name=".DocumentFilter" />
+        <activity android:name=".NewDocument" />
+        <activity android:name=".SeeDocument" />
+        <activity android:name=".StoricoDocumenti" />
+        <activity
+            android:name=".LstDocumentiAdapter"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".CatalogoDocument" />
+        <activity android:name=".NewQA" />
+        <activity
+            android:name=".LstAnswerQueryAdapter"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".CatalogoQuery" />
+        <activity android:name=".SeeQuery" />
+        <activity
+            android:name=".LstAnswerAdapter"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".StoricoAnswer" />
+        <activity
+            android:name=".LstQueryAdapter"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".StoricoQuery" />
+        <activity android:name=".Settings" />
+        <activity android:name=".Home" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
