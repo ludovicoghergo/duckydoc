@@ -100,7 +100,7 @@ services:
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
     ports:
-      - "8080:8080"
+      - "8083:8080"
     depends_on:
       - dbutenti
       - rabbitmq
@@ -112,7 +112,7 @@ services:
        PGADMIN_DEFAULT_PASSWORD: admin
        PGADMIN_LISTEN_PORT: 50
     ports:
-       - "5050:50"
+       - "5053:50"
     volumes:
        - pgadminut-data:/var/lib/pgadmin
     links:

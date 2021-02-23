@@ -1,7 +1,7 @@
-package com.DuckyDoc.QA.rabbit;
+package com.duckydoc.appunti.rabbitmq;
 
-import com.DuckyDoc.QA.Model.User;
-import com.DuckyDoc.QA.Repo.UserRepository;
+import com.duckydoc.appunti.model.User;
+import com.duckydoc.appunti.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ public class Receiver {
     UserRepository userRepository;
 
     public void receiveMessage(String message) {
-        System.out.println("Received by QA Receiver <" + message + ">");
+        System.out.println("Received by appunti Receiver <" + message + ">");
 
         int pos = message.indexOf("-", 0);
         /*System.out.println(message.substring(0, pos));

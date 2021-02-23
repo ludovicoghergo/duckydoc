@@ -1,6 +1,7 @@
 package com.duckydoc.appunti.repo;
 
 import com.duckydoc.appunti.model.Document;
+import org.springframework.data.domain.Example;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
     List<Document> findByUniversity(String university);
     List<Document> findByCourse(String course);
     List<Document> findByUserId(long user_id);
+
+    List<Document> findAll(Example<Document> exampleQuery);
 }

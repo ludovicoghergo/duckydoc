@@ -44,6 +44,19 @@ public class Document {
     @OneToMany(mappedBy = "document")
     private List<Review> reviews;
 
+    public Document(String university, String course, String format, int year) {
+        this.format = format;
+        this.university = university;
+        this.year = year;
+        this.course = course;
+    }
+
+    public Document(String university, String course, String format) {
+        this.format = format;
+        this.university = university;
+        this.course = course;
+    }
+
     public Document(String title, String format, int creationData, int price, String description, String university, int year, String course, String fileUrl, User user) {
         this.title = title;
         this.format = format;

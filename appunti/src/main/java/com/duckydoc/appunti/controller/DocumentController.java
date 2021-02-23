@@ -3,6 +3,8 @@ package com.duckydoc.appunti.controller;
 import com.duckydoc.appunti.model.Document;
 import com.duckydoc.appunti.repo.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +38,31 @@ public class DocumentController {
         System.out.println("Insert new document...");
         Document _document = repository.save(new Document(document.getTitle(), document.getFormat(), document.getCreationData(), document.getPrice(), document.getDescription(), document.getUniversity(), document.getYear(), document.getCourse(), document.getFileUrl(), document.getUser()));
         return _document;
+    }
+
+    @GetMapping("/documents/{university}/{course}/{tipologia}/{anno}")
+    public List<Document> filterDocument(@PathVariable String university, @PathVariable String course, @PathVariable String tipologia, @PathVariable String anno){
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Example<Document> exampleQuery;
+
+        if(university.equals("null")){
+            university = null;
+        }
+        if(course.equals("null")){
+            course = null;
+        }
+        if(tipologia.equals("null")){
+            tipologia = null;
+        }
+        if(anno.equals("null")){
+            exampleQuery = Example.of(new Document(university, course, tipologia), matcher);
+        }
+        else{
+            exampleQuery = Example.of(new Document(university, course, tipologia, Integer.parseInt(anno)), matcher);
+        }
+
+        List<Document> results = repository.findAll(exampleQuery);
+        return results;
     }
 
     @GetMapping("/documents/{documentId}")
