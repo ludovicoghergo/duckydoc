@@ -11,11 +11,12 @@ module.exports = {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
-    parser: 'babel-eslint',
-    parserOptions: {
-        sourceType: 'module',
-        allowImportExportEverywhere: true
-    }
+    "parser": "vue-eslint-parser",
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
     "plugins": [
         "vue"
     ],

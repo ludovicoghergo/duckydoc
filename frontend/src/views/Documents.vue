@@ -60,6 +60,9 @@ export default {
   data() {
     return {
       searchUni: "",
+      searchCourse: "",
+      searchType: "",
+      searchYear: "",
     };
   },
 };
