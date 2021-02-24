@@ -38,25 +38,31 @@ public class DocumentController {
         return _document;
     }
 
+    @GetMapping("/documents/{university}/{course}/{tipologia}/{anno}")
+    public List<Document> filterDocument(@PathVariable String university, @PathVariable String course, @PathVariable String tipologia, @PathVariable String anno){
+        List<Document> results;
+
+        if(university.equals("null")){
+            university = "";
+        }
+        if(course.equals("null")){
+            course = "";
+        }
+        if(tipologia.equals("null")){
+            tipologia = "";
+        }
+        if(anno.equals("null")){
+            results = repository.findByUniversityContainsAndCourseContainsAndFormatContains(university, course, tipologia);
+        }
+        else{
+            results = repository.findByUniversityContainsAndCourseContainsAndFormatContainsAndYear(university, course, tipologia, Integer.parseInt(anno));
+        }
+
+        return results;
+    }
+
     @GetMapping("/documents/{documentId}")
     public Document getDocumentById (@PathVariable long documentId){
         return repository.findById(documentId);
     }
-
-    @GetMapping("/documents/title/{title}")
-    public List<Document> getDocumentsByTitle(@PathVariable String title){
-        return repository.findByTitle(title);
-    }
-
-    @GetMapping("/documents/university/{university}")
-    public List<Document> getDocumentByUniversity(@PathVariable String university){
-        return repository.findByUniversity(university);
-    }
-
-    @GetMapping("documents/course/{course}")
-    public List<Document> getDocumentByCourse(@PathVariable String course){
-        return repository.findByCourse(course);
-    }
-
-
 }

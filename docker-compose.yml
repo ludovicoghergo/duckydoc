@@ -81,6 +81,45 @@ services:
     links:
       - "dbAppunti:pgsql-server"
       
+<<<<<<< HEAD
+=======
+  dbutenti:
+    image: postgres
+    ports:
+      - "5432"
+    volumes:
+      - dbut-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: Utenti
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      restart: unless-stopped
+      
+  Utenti:
+    build: ./utenti
+    image: appbootrestutenti
+    container_name: appUtenti
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+    ports:
+      - "8083:8080"
+    depends_on:
+      - dbutenti
+      - rabbitmq
+      
+  pgadminUtenti:
+    image: dpage/pgadmin4
+    environment:
+       PGADMIN_DEFAULT_EMAIL: mattia98779@gmail.com
+       PGADMIN_DEFAULT_PASSWORD: admin
+       PGADMIN_LISTEN_PORT: 50
+    ports:
+       - "5053:50"
+    volumes:
+       - pgadminut-data:/var/lib/pgadmin
+    links:
+      - "dbutenti:pgsql-server"
+>>>>>>> c2f5bfb554348accd7837396bac3139b4d1c85a1
 
 volumes:
   dbappunti-data:
