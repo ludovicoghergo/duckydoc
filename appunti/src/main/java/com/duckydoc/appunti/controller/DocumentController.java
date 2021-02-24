@@ -3,8 +3,6 @@ package com.duckydoc.appunti.controller;
 import com.duckydoc.appunti.model.Document;
 import com.duckydoc.appunti.repo.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,26 +40,24 @@ public class DocumentController {
 
     @GetMapping("/documents/{university}/{course}/{tipologia}/{anno}")
     public List<Document> filterDocument(@PathVariable String university, @PathVariable String course, @PathVariable String tipologia, @PathVariable String anno){
-        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-        Example<Document> exampleQuery;
+        List<Document> results;
 
         if(university.equals("null")){
-            university = null;
+            university = "";
         }
         if(course.equals("null")){
-            course = null;
+            course = "";
         }
         if(tipologia.equals("null")){
-            tipologia = null;
+            tipologia = "";
         }
         if(anno.equals("null")){
-            exampleQuery = Example.of(new Document(university, course, tipologia), matcher);
+            results = repository.findByUniversityContainsAndCourseContainsAndFormatContains(university, course, tipologia);
         }
         else{
-            exampleQuery = Example.of(new Document(university, course, tipologia, Integer.parseInt(anno)), matcher);
+            results = repository.findByUniversityContainsAndCourseContainsAndFormatContainsAndYear(university, course, tipologia, Integer.parseInt(anno));
         }
 
-        List<Document> results = repository.findAll(exampleQuery);
         return results;
     }
 
@@ -69,21 +65,4 @@ public class DocumentController {
     public Document getDocumentById (@PathVariable long documentId){
         return repository.findById(documentId);
     }
-
-    @GetMapping("/documents/title/{title}")
-    public List<Document> getDocumentsByTitle(@PathVariable String title){
-        return repository.findByTitle(title);
-    }
-
-    @GetMapping("/documents/university/{university}")
-    public List<Document> getDocumentByUniversity(@PathVariable String university){
-        return repository.findByUniversity(university);
-    }
-
-    @GetMapping("documents/course/{course}")
-    public List<Document> getDocumentByCourse(@PathVariable String course){
-        return repository.findByCourse(course);
-    }
-
-
 }
