@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Tools {
-    public static final String userURL = "http://192.168.1.28:8080/api/";
+    public static final String userURL = "http://192.168.1.28:8083/api/";
     public static final String documentURL = "http://192.168.1.28:8081/api/";
     public static final String qaURL = "http://192.168.1.28:8082/api/";
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -80,9 +80,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return account;
-        }
+        return account;
     }
 
     //Get all queries
@@ -99,11 +97,6 @@ public class Tools {
                 sqlErrorContainer = genericError;
                 Log.i("info", "Errore1");
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getQueries();
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 Log.i("body", gson.toJson(result));
@@ -119,9 +112,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstQueries;
-        }
+        return lstQueries;
     }
 
     //Get query from id
@@ -137,11 +128,6 @@ public class Tools {
                 //problema connessione db
                 sqlErrorContainer = genericError;
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getQueriesId(id);
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 Log.i("info", result);
@@ -154,9 +140,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return query;
-        }
+        return query;
     }
 
     //Get all user queries
@@ -172,11 +156,6 @@ public class Tools {
 
                 //problema connessione db
                 sqlErrorContainer = genericError;
-            }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getUserQueries();
             }
             else {
                 Log.i("info", "corretto");
@@ -194,9 +173,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstQueries;
-        }
+        return lstQueries;
     }
 
     //Get all user answers
@@ -212,11 +189,6 @@ public class Tools {
                 //problema connessione db
                 sqlErrorContainer = genericError;
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getUserAnswers();
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 vAnswers = gson.fromJson(result, Answer[].class);
@@ -231,9 +203,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstAnswers;
-        }
+        return lstAnswers;
     }
 
     public static boolean postQuery(Query q){
@@ -246,11 +216,6 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
-            }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return postQuery(q);
             }
             else {
                 Gson gson = new Gson();
@@ -280,11 +245,6 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
-            }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return postAnswer(a);
             }
             else {
                 Gson gson = new Gson();
@@ -317,11 +277,6 @@ public class Tools {
                 //problema connessione db
                 sqlErrorContainer = genericError;
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getUserDocuments();
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 vDocument = gson.fromJson(result, Document[].class);
@@ -336,9 +291,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstDocuments;
-        }
+        return lstDocuments;
     }
 
     //Get all user documents
@@ -354,11 +307,6 @@ public class Tools {
                 //problema connessione db
                 sqlErrorContainer = genericError;
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getUserDocuments();
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 vDocument = gson.fromJson(result, Document[].class);
@@ -373,9 +321,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstDocuments;
-        }
+        return lstDocuments;
     }
 
     public static boolean postDocument(Document d){
@@ -388,11 +334,6 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
-            }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return postDocument(d);
             }
             else {
                 Gson gson = new Gson();
@@ -425,11 +366,6 @@ public class Tools {
                 //problema connessione db
                 sqlErrorContainer = genericError;
             }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return getDocumentReviews();
-            }
             else {
                 Gson gson = new GsonBuilder().setLenient().create();
                 vReview = gson.fromJson(result, Review[].class);
@@ -444,9 +380,7 @@ public class Tools {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
         }
-        finally {
-            return lstReviews;
-        }
+        return lstReviews;
     }
 
     public static boolean postReview(Review r){
@@ -459,11 +393,6 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
-            }
-            else if(result.equals("LOGERR")){ //probabilmente inutile
-                sqlErrorContainer = "sessione scaduta";
-                loginUser(account.getEmail(), account.getPassword());
-                return postReview(r);
             }
             else {
                 Gson gson = new Gson();
