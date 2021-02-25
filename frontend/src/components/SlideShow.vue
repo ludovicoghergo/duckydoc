@@ -10,7 +10,7 @@
       <v-container fill-height>
         <v-layout align-end>
           <v-flex>
-            <h1 class="text-center slide_desc">PROVAA</h1>
+            <h1 class="text-center slide_desc">Join Our Community</h1>
           </v-flex>
         </v-layout>
       </v-container>
@@ -26,20 +26,20 @@ export default {
     return {
       items: [
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-        }
-      ]
+          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

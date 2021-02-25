@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class AnswerController {
@@ -45,7 +45,7 @@ public class AnswerController {
     }
 
     @GetMapping("queries/{queryId}/answers")
-    public List<Answer> getAnswers(@PathVariable (value = "queryId") Long queryId) {
+    public List<Answer> getAnswers(@PathVariable(value = "queryId") Long queryId) {
         List<Answer> answers = answerRepository.findByQueryId(queryId);
 
         return answers;
@@ -67,7 +67,7 @@ public class AnswerController {
     public List<Answer> findByUser(@PathVariable long id_user) {
         List<Answer> answers = answerRepository.findByUserId(id_user);
 
-        for(int i = 0; i < answers.size(); i++){
+        for (int i = 0; i < answers.size(); i++) {
             answers.get(i).getQuery().setAnswers(null);
         }
 
@@ -81,7 +81,7 @@ public class AnswerController {
         return answer;
     }
 
-    //UTILE??
+    // UTILE??
     @DeleteMapping("/answers/delete/{id}")
     public ResponseEntity<String> deleteAnswer(@PathVariable("id") long id) {
         System.out.println("Delete Answer with ID = " + id + "...");
@@ -90,7 +90,7 @@ public class AnswerController {
         return new ResponseEntity<>("Answer has been deleted!", HttpStatus.OK);
     }
 
-    //UTILE??
+    // UTILE??
     @DeleteMapping("/answers/delete")
     public ResponseEntity<String> deleteAllAnswers() {
         System.out.println("Delete All Answers...");
@@ -99,7 +99,7 @@ public class AnswerController {
         return new ResponseEntity<>("All Answers have been deleted!", HttpStatus.OK);
     }
 
-    //UTILE??
+    // UTILE??
     @PutMapping("/answers/setText/{id}")
     public ResponseEntity<Answer> updateAnswer(@PathVariable("id") long id, @RequestBody String newText) {
         System.out.println("Update Answer with ID = " + id + "...");

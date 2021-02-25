@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class ReviewController {
@@ -28,14 +28,15 @@ public class ReviewController {
     }
 
     @GetMapping("/documents/{documentId}/reviews")
-    public List<Review> getReviewsByDocument(@PathVariable long documentId){
+    public List<Review> getReviewsByDocument(@PathVariable long documentId) {
         List<Review> reviews = repository.findByDocumentId(documentId);
         return reviews;
     }
 
     @PostMapping(value = "/reviews/create")
     public Review postReview(@RequestBody Review review) {
-        Review _review = repository.save(new Review(review.getVote(), review.getText(), review.getData(), review.getUser(), review.getDocument()));
+        Review _review = repository.save(new Review(review.getVote(), review.getText(), review.getData(),
+                review.getUser(), review.getDocument()));
         return _review;
     }
 

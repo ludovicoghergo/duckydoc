@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class ReportController {
@@ -17,19 +17,19 @@ public class ReportController {
     ReportRepository repository;
 
     @GetMapping("/reports")
-    public List<Report> getAllReporgts(){
+    public List<Report> getAllReporgts() {
         List<Report> reports = new ArrayList<>();
         repository.findAll().forEach(reports::add);
         return reports;
     }
 
     @GetMapping("/reports/{reportId}")
-    public Report getReportById(@PathVariable long reportId){
+    public Report getReportById(@PathVariable long reportId) {
         return repository.findById(reportId);
     }
 
     @PostMapping("reports/create")
-    public void postreport(@RequestBody Report report){
+    public void postreport(@RequestBody Report report) {
         repository.save(report);
     }
 

@@ -11,7 +11,7 @@
       ></v-text-field>
     </div>
     <div class="left_QA">
-      <Questions n_page="0" />
+      <Questions n_page="0" :txt_search="searchQuestion" />
     </div>
     <div class="right_QA">
       <Questions n_page="2" />

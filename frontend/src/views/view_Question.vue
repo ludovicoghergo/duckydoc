@@ -27,7 +27,7 @@ export default {
   mounted() {
     var vm = this;
     axios
-      .get("http://localhost:8081/api/querys/" + vm.id_number)
+      .get("http://localhost:8082/api/queries/" + vm.id_number)
       .then(function (response) {
         vm.question = response.data;
       })

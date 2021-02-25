@@ -81,8 +81,6 @@ services:
     links:
       - "dbAppunti:pgsql-server"
       
-<<<<<<< HEAD
-=======
   dbutenti:
     image: postgres
     ports:
@@ -119,7 +117,6 @@ services:
        - pgadminut-data:/var/lib/pgadmin
     links:
       - "dbutenti:pgsql-server"
->>>>>>> c2f5bfb554348accd7837396bac3139b4d1c85a1
 
 volumes:
   dbappunti-data:
