@@ -1,8 +1,7 @@
-package com.duckydoc.utenti.controller;
+package com.DuckyDoc.Report.Controller;
 
-import com.duckydoc.utenti.model.Report;
-import com.duckydoc.utenti.model.Utente;
-import com.duckydoc.utenti.repo.ReportRepository;
+import com.DuckyDoc.Report.model.Report;
+import com.DuckyDoc.Report.repo.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +27,14 @@ public class ReportController {
         return repository.findById(reportId);
     }
 
+    @GetMapping("/reports/{document_id}")
+    public List<Report> getReportByDocument(@PathVariable long document_id) {
+        return repository.findByDocumentId(document_id);
+    }
+
     @PostMapping("reports/create")
-    public void postreport(@RequestBody Report report) {
-        repository.save(report);
+    public Report postreport(@RequestBody Report report) {
+        return repository.save(report);
     }
 
 }

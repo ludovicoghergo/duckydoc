@@ -31,8 +31,6 @@ public class AnswerController {
     AnswerRepository answerRepository;
     @Autowired
     QueryRepository queryRepository;
-    @Autowired
-    UserRepository userRepository;
 
     @GetMapping("/answers")
     public List<Answer> getAllAnswers() {

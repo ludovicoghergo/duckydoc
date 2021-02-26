@@ -30,11 +30,6 @@ public class QueryController {
     @Autowired
     QueryRepository repository;
 
-    @Autowired
-    UserRepository userRepository;
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
     @GetMapping("/queries")
     public List<Query> getAllQueries() {
         System.out.println("Get all Queries...");

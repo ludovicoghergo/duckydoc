@@ -105,6 +105,15 @@ services:
       - dbutenti
       - rabbitmq
       
+  Report:
+    build: ./Report
+    image: appbootrestreport
+    container_name: Report
+    ports:
+      - "8084:8080"
+    depends_on:
+      - dbutenti
+      
   pgadminUtenti:
     image: dpage/pgadmin4
     environment:
