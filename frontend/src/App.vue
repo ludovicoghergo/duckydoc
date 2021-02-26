@@ -35,6 +35,7 @@
 import GoogleLogin from "vue-google-login";
 import { LoaderPlugin } from "vue-google-login";
 import Vue from "vue";
+import axios from "axios";
 Vue.use(LoaderPlugin, {
   client_id:
     "566387838712-mkstlbr8qaa6md7c9d5lq5oe0n9uq2hs.apps.googleusercontent.com",
@@ -49,9 +50,15 @@ export default {
     onSuccess(googleUser) {
       var googlelogin = googleUser.getBasicProfile();
       axios
-        .get("http://localhost:8082/api/queries/" + vm.id_number)
+        .post("http://localhost:8083/api/utenti/create", {
+          idGoogle: googlelogin.getId(),
+          name: googlelogin.getGivenName(),
+          email: googlelogin.getEmail(),
+          surname: googlelogin.getFamilyName(),
+          isMod: "false",
+        })
         .then(function (response) {
-          vm.question = response.data;
+          console.log(response);
         })
         .catch((error) => {
           if (error.response) {
@@ -64,8 +71,6 @@ export default {
             console.log("Error", error.message);
           }
         });
-
-      googleUser.getBasicProfile();
     },
     onFailure() {
       console.log("failed");

@@ -16,8 +16,8 @@ public class Runner {
     @Autowired
     private TopicExchange exchange;
 
-    public void sendMessage(Utente utente){
-        rabbitTemplate.convertAndSend(exchange.getName(), "foo.bar.baz", utente.getId() + "-" + utente.getNome());
+    public void sendMessage(Utente utente) {
+        rabbitTemplate.convertAndSend(exchange.getName(), "foo.bar.baz", utente.getId() + "-" + utente.getName());
         System.out.println("message sent...");
     }
 }

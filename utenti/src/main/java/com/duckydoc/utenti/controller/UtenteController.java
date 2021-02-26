@@ -33,20 +33,6 @@ public class UtenteController {
         return utente;
     }
 
-    @GetMapping("/utenti/login/{email}/{password}")
-    public String login(@PathVariable String email, @PathVariable String password) {
-        Utente utente = repository.findByEmailAndPassword(email, password);
-        if (utente == null) {
-            utente = repository.findByEmail(email);
-            if (utente == null) {
-                return "EMAILERR";
-            } else {
-                return "FAILURE";
-            }
-        }
-        return String.valueOf(utente.getId());
-    }
-
     @PostMapping("utenti/create")
     public Utente postUtente(@RequestBody Utente utente) {
         repository.save(utente);
