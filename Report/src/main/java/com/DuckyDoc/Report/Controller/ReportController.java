@@ -1,7 +1,9 @@
 package com.DuckyDoc.Report.Controller;
 
 import com.DuckyDoc.Report.model.Report;
+import com.DuckyDoc.Report.model.Utente;
 import com.DuckyDoc.Report.repo.ReportRepository;
+import com.DuckyDoc.Report.repo.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,9 @@ import java.util.List;
 public class ReportController {
     @Autowired
     ReportRepository repository;
+
+    @Autowired
+    UtenteRepository utenteRepository;
 
     @GetMapping("/reports")
     public List<Report> getAllReporgts() {
@@ -32,8 +37,11 @@ public class ReportController {
         return repository.findByDocumentId(document_id);
     }
 
-    @PostMapping("reports/create")
-    public Report postreport(@RequestBody Report report) {
+    @PostMapping("reports/{id_user}/create")
+    public Report postReport(@RequestBody Report report, @PathVariable int id_user) {
+        Utente u = utenteRepository.findById(id_user);
+        report.setUser(u);
+        System.out.println(u.getNome());
         return repository.save(report);
     }
 

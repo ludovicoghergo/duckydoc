@@ -1,6 +1,7 @@
 package com.duckydoc.utenti.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "utenti")
@@ -20,6 +21,9 @@ public class Utente {
 
     @Column(name = "isModeratore")
     private boolean isModeratore;
+
+    @OneToMany(mappedBy = "user")
+    private List<Report> reports;
 
     public Utente(String nome, String email, String password, boolean isModeratore) {
         this.nome = nome;

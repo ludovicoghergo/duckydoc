@@ -20,6 +20,10 @@ public class Report {
     @Column(name = "status")
     private String status;
 
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="userId")
+    private Utente user;
+
     public Report(long documentId, String description, String status) {
         this.documentId = documentId;
         this.description = description;
@@ -59,5 +63,13 @@ public class Report {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Utente getUser() {
+        return user;
+    }
+
+    public void setUser(Utente user) {
+        this.user = user;
     }
 }
