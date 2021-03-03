@@ -37,10 +37,11 @@ export default {
     },
     sendQuestion() {
       var id = this.check_cookie_value("id");
+      var name = this.check_cookie_value("name");
       var day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
       axios
         .post("http://localhost:8082/api/queries/create", {
-          user: id,
+          user: { id, name },
           text: this.question_txt,
           date: day,
         })

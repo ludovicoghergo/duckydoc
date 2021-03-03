@@ -88,9 +88,7 @@ export default {
   },
   components: { GoogleLogin },
   mounted() {
-    this.$nextTick(function () {
-      console.log(this.check_cookie_value("Token"));
-    });
+    if (this.check_cookie_value("Token") != -1) this.updatelogin(true);
   },
   data: () => ({
     params: {

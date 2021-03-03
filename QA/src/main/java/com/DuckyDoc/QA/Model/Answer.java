@@ -11,7 +11,7 @@ public class Answer {
     private long id;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="idUser")
+    @PrimaryKeyJoinColumn(name = "idUser")
     private User user;
 
     @Column(name = "text")
@@ -24,19 +24,19 @@ public class Answer {
     private boolean correct;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="queryId")
+    @PrimaryKeyJoinColumn(name = "queryId")
     private Query query;
 
     public Answer() {
     }
 
-    public Answer(User user, String text, boolean correct, int date) {
+    public Answer(User user, Query query, String text, boolean correct, int date) {
         this.user = user;
+        this.query = query;
         this.text = text;
         this.correct = correct;
         this.date = date;
     }
-
 
     public long getId() {
         return id;
@@ -88,6 +88,7 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer[id=" + id + ", user=" + user + ", text=" + text + ", corrected=" + correct + ", query=" + query.getText() + "]";
+        return "Answer[id=" + id + ", user=" + user + ", text=" + text + ", corrected=" + correct + ", query="
+                + query.getText() + "]";
     }
 }

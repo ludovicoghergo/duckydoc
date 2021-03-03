@@ -3,12 +3,16 @@
     <v-row v-for="(answer, index) in answers" :key="index">
       <v-col cols="12" class="d-flex justify-center">
         <v-card color="#f4ecb4" class="mt-2 answer">
-          <v-card-title class="headline"> Nome tizio</v-card-title>
+          <v-card-title class="headline">
+            {{ answer.user.username }}</v-card-title
+          >
 
           <v-card-text>{{ answer.text }}</v-card-text>
 
           <v-card-actions class="card-actions">
-            <v-btn text> da fare</v-btn>
+            <v-btn v-if="check_cookie_value('id') == answer.query.user.id" text>
+              Select as correct</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -27,11 +31,22 @@ export default {
       answers: [],
     };
   },
-
+  methods: {
+    check_cookie_value(name) {
+      var match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+      );
+      if (match) {
+        return match[2];
+      } else {
+        return -1;
+      }
+    },
+  },
   mounted() {
     var vm = this;
     axios
-      .get("http://localhost:8081/api/querys/" + vm.id + "/answers")
+      .get("http://localhost:8082/api/queries/" + vm.id + "/answers")
       .then(function (response) {
         vm.answers = response.data;
       })
@@ -49,7 +64,7 @@ export default {
           console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
+          console.log("Errorripdd", error.message);
         }
       });
   },
