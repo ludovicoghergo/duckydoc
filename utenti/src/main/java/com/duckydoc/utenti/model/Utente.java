@@ -78,4 +78,12 @@ public class Utente {
     public void setMod(boolean mod) {
         this.isMod = mod;
     }
+
+    public String getidGoogle() {
+        return idGoogle;
+    }
+
+    public void setidGoogle(String name) {
+        this.idGoogle = name;
+    }
 }

@@ -6,5 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface UtenteRepository extends CrudRepository<Utente, Long> {
     Utente findById(long idUtente);
 
+    Utente findByIdGoogle(String idGoogle);
+
     Utente findByEmail(String email);
 }

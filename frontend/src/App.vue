@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" fixed dark>
-      <div class="d-flex align-center">
-        <h2>DuckyDoc</h2>
-      </div>
+      <v-btn text @mousedown="goTo('/')">
+        <span class="mr-2">DuckyDoc</span>
+      </v-btn>
 
       <v-spacer></v-spacer>
 
@@ -16,13 +16,36 @@
       <v-btn text @mousedown="goTo('/Shop')">
         <span class="mr-2">Shop</span>
       </v-btn>
-      <GoogleLogin
-        :params="params"
-        :onSuccess="onSuccess"
-        :onFailure="onFailure"
-        :renderParams="renderParams"
-        >Login</GoogleLogin
-      >
+
+      <span v-if="getLoggedIn" class="mr-2">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text v-bind="attrs" v-on="on"> Account </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-btn text @mousedown="logout()">
+                <GoogleLogin
+                  :params="params"
+                  :onSuccess="onSuccess"
+                  :logoutButton="true"
+                  >Logout</GoogleLogin
+                ></v-btn
+              >
+            </v-list-item>
+            <v-list-item>
+              <v-btn text @mousedown="goTo('/newQuestion')">
+                New question
+              </v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </span>
+      <span v-else class="mr-2"
+        ><v-btn text @mousedown="goTo('/Login')">
+          <span class="mr-2">Login</span>
+        </v-btn>
+      </span>
     </v-app-bar>
 
     <v-main>
@@ -33,62 +56,46 @@
 
 <script>
 import GoogleLogin from "vue-google-login";
-import { LoaderPlugin } from "vue-google-login";
-import Vue from "vue";
-import axios from "axios";
-Vue.use(LoaderPlugin, {
-  client_id:
-    "566387838712-mkstlbr8qaa6md7c9d5lq5oe0n9uq2hs.apps.googleusercontent.com",
-});
-Vue.GoogleAuth.then((auth2) => {
-  console.log(auth2.isSignedIn.get());
-  console.log(auth2.currentUser.get());
-});
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "App",
   methods: {
-    onSuccess(googleUser) {
-      var googlelogin = googleUser.getBasicProfile();
-      axios
-        .post("http://localhost:8083/api/utenti/create", {
-          idGoogle: googlelogin.getId(),
-          name: googlelogin.getGivenName(),
-          email: googlelogin.getEmail(),
-          surname: googlelogin.getFamilyName(),
-          isMod: "false",
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            console.log(error.request);
-          } else {
-            console.log("Error", error.message);
-          }
-        });
+    ...mapActions(["updatelogin"]),
+    check_cookie_value(name) {
+      var match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+      );
+      if (match) {
+        return match[2];
+      } else {
+        return -1;
+      }
     },
-    onFailure() {
-      console.log("failed");
+    onSuccess() {
+      this.updatelogin(false);
+    },
+    logout() {
+      document.cookie = "Token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "name= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
     },
     goTo(address) {
       this.$router.push(address);
     },
   },
+  computed: {
+    ...mapGetters(["getLoggedIn"]),
+  },
   components: { GoogleLogin },
-
+  mounted() {
+    this.$nextTick(function () {
+      console.log(this.check_cookie_value("Token"));
+    });
+  },
   data: () => ({
     params: {
       client_id:
         "566387838712-mkstlbr8qaa6md7c9d5lq5oe0n9uq2hs.apps.googleusercontent.com",
-    },
-    renderParams: {
-      width: 50,
-      height: 50,
     },
   }),
 };

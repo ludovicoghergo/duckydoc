@@ -28,8 +28,8 @@ public class UtenteController {
     }
 
     @GetMapping("/utenti/{idUtente}")
-    public Utente getUtente(@PathVariable long idUtente) {
-        Utente utente = repository.findById(idUtente);
+    public Utente getUtente(@PathVariable String idUtente) {
+        Utente utente = repository.findByIdGoogle(idUtente);
         return utente;
     }
 
