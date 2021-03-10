@@ -10,9 +10,22 @@
           <v-card-text>{{ answer.text }}</v-card-text>
 
           <v-card-actions class="card-actions">
-            <v-btn v-if="check_cookie_value('id') == answer.query.user.id" text>
+            <v-btn
+              v-if="
+                check_cookie_value('id') == answer.query.user.id &&
+                !answer.correct
+              "
+              @click="corrAnswer(answer.id)"
+              text
+            >
               Select as correct</v-btn
             >
+            <v-btn v-if="answer.correct" disabled text>
+              Marked as correct.</v-btn
+            >
+          </v-card-actions>
+          <v-card-actions class="card-actions2">
+            <v-btn text disabled> {{ convertDate(answer.date) }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -32,6 +45,10 @@ export default {
     };
   },
   methods: {
+    convertDate(dateString) {
+      dateString = dateString.toString();
+      return dateString.replace(/(\d{4})(\d\d)(\d\d)/g, "$2/$3/$1");
+    },
     check_cookie_value(name) {
       var match = document.cookie.match(
         new RegExp("(^| )" + name + "=([^;]+)")
@@ -41,6 +58,30 @@ export default {
       } else {
         return -1;
       }
+    },
+    corrAnswer(idAns) {
+      axios
+        .put("http://localhost:8082/api/answers/correct/" + idAns)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch((error) => {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Errorripdd", error.message);
+          }
+        });
     },
   },
   mounted() {
@@ -80,6 +121,11 @@ export default {
 .card-actions {
   position: absolute;
   bottom: 0;
+}
+.card-actions2 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 </style>
 

@@ -29,7 +29,7 @@
                   :params="params"
                   :onSuccess="onSuccess"
                   :logoutButton="true"
-                  >Logout</GoogleLogin
+                  >LOGOUT</GoogleLogin
                 ></v-btn
               >
             </v-list-item>
@@ -37,6 +37,9 @@
               <v-btn text @mousedown="goTo('/newQuestion')">
                 New question
               </v-btn>
+            </v-list-item>
+            <v-list-item>
+              <v-btn text @mousedown="goTo('/newUpload')"> New Upload </v-btn>
             </v-list-item>
           </v-list>
         </v-menu>

@@ -2,6 +2,21 @@ package com.duckydoc.appunti.model;
 
 import javax.persistence.*;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Entity
 @Table(name = "documents")
@@ -12,6 +27,16 @@ public class Document {
 
     @Column(name = "title")
     private String title;
+
+    @Column(name = "nameFile")
+    private String nameFile;
+
+    @Column(name = "data")
+    @Lob
+    private byte[] data;
+
+    @Column(name = "size")
+    private Long size;
 
     @Column(name = "format")
     private String format;
@@ -34,11 +59,8 @@ public class Document {
     @Column(name = "course")
     private String course;
 
-    @Column (name = "fileUrl")
-    private String fileUrl;
-
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="userId")
+    @PrimaryKeyJoinColumn(name = "userId")
     private User user;
 
     @OneToMany(mappedBy = "document")
@@ -57,16 +79,15 @@ public class Document {
         this.course = course;
     }
 
-    public Document(String title, String format, int creationData, int price, String description, String university, int year, String course, String fileUrl, User user) {
+    public Document(String title, int creationData, int price, String description, String university, int year,
+            String course, User user) {
         this.title = title;
-        this.format = format;
         this.creationData = creationData;
         this.price = price;
         this.description = description;
         this.university = university;
         this.year = year;
         this.course = course;
-        this.fileUrl = fileUrl;
         this.user = user;
     }
 
@@ -113,6 +134,14 @@ public class Document {
         this.price = price;
     }
 
+    public String getnameFile() {
+        return nameFile;
+    }
+
+    public void setnameFile(String name) {
+        this.nameFile = name;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -145,19 +174,27 @@ public class Document {
         this.course = course;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 }

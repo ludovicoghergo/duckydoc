@@ -3,7 +3,13 @@ package com.duckydoc.appunti.controller;
 import com.duckydoc.appunti.model.Document;
 import com.duckydoc.appunti.repo.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.duckydoc.appunti.model.FileResponse;
+import com.duckydoc.appunti.FileService.FileService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class DocumentController {
+
+    private final FileService fileService;
+
+    @Autowired
+    public DocumentController(FileService fileService) {
+        this.fileService = fileService;
+    }
 
     @Autowired
     DocumentRepository repository;
@@ -32,12 +45,20 @@ public class DocumentController {
     }
 
     @PostMapping(value = "/documents/create")
-    public Document postDocument(@RequestBody Document document) {
-        System.out.println("Insert new document...");
-        Document _document = repository.save(new Document(document.getTitle(), document.getFormat(),
-                document.getCreationData(), document.getPrice(), document.getDescription(), document.getUniversity(),
-                document.getYear(), document.getCourse(), document.getFileUrl(), document.getUser()));
-        return _document;
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("price") int price,
+            @RequestParam("date") int creationData, @RequestParam("desc") String description,
+            @RequestParam("university") String university, @RequestParam("year") int year,
+            @RequestParam("course") String course, @RequestParam("userId") int userId,
+            @RequestParam("username") String username, @RequestParam("username") String title) {
+        try {
+            fileService.save(file, price, creationData, description, university, year, course, userId, username, title);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(String.format("File uploaded successfully: %s", file.getOriginalFilename()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
+        }
     }
 
     @GetMapping("/documents/{university}/{course}/{tipologia}/{anno}")
