@@ -15,11 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Tools {
-    public static final String userURL = "http://192.168.1.28:8083/api/";
-    public static final String documentURL = "http://192.168.1.28:8081/api/";
-    public static final String qaURL = "http://192.168.1.28:8082/api/";
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String sUserKey = "user_data_unique_key";
+    public static final String requestURL = "http://192.168.1.28:8085/api/";
     public static final String genericError = "è stato rilevato un errore, riprova";
 
     public static Account account;
@@ -32,26 +28,14 @@ public class Tools {
         return sqlErrorContainer;
     }
 
-    //Save and get data User into local smartphone
-    public static void saveSharedData(Context context, String key, String data) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, data);
-        editor.apply();
-    }
-    public static String getSharedData(Context context, String key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(key, "");
-    }
-
     public static void setErrorMessage(TextView label, String message){
         label.setText(message);
         label.setTextColor(Color.RED);
     }
 
     //Login
-    public static Account loginUser(String email, String password){
-        String parameters = userURL + "utenti/login/"+email+"/"+password;
+    public static Account loginUser(String id){
+        String parameters = requestURL + "utenti/" + id;
         String result;
         Account account = null;
         HttpGetRequest getRequest = new HttpGetRequest();
@@ -72,8 +56,8 @@ public class Tools {
                     break;
                 default:
                     Gson gson = new Gson();
-                    int id = gson.fromJson(result, int.class);
-                    account = new Account(id, email, "aletemp", password);
+                    account = gson.fromJson(result, Account.class);
+                    //account = new Account(id, email, "aletemp", password);
                     break;
             }
         } catch (Exception e) {
@@ -83,9 +67,40 @@ public class Tools {
         return account;
     }
 
+    public static boolean postUser(Account u){
+        String parameters = requestURL + "utenti/create";
+        String result;
+
+        HttpPostRequest postRequest = new HttpPostRequest(u);
+        try {
+            result = postRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new Gson();
+                Account tmp = gson.fromJson(result, Account.class);
+                if (tmp != null) {
+                    account.setIdUser(tmp.getIdUser());
+                    Log.i("INFO", String.valueOf(tmp.getIdUser()));
+                    return true;
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return false;
+    }
+
     //Get all queries
     public static ArrayList<Query> getQueries(){
-        String parameters = qaURL + "queries";
+        String parameters = requestURL + "queries";
         String result;
         Query[] vQueries;
         ArrayList<Query> lstQueries = new ArrayList<>();
@@ -117,7 +132,7 @@ public class Tools {
 
     //Get query from id
     public static Query getQueriesId(long id){
-        String parameters = qaURL + "queries/" + id;
+        String parameters = requestURL + "queries/" + id;
         String result;
         Query query = null;
         ArrayList<Query> lstQueries = new ArrayList<>();
@@ -143,9 +158,40 @@ public class Tools {
         return query;
     }
 
+    //Get query from id
+    public static List<Answer> getQueryAnswers(long id){
+        String parameters = requestURL + "queries/" + id + "/answers";
+        String result;
+        Answer[] vAnswers;
+        ArrayList<Answer> lstAnswers = new ArrayList<>();
+        HttpGetRequest getRequest = new HttpGetRequest();
+        try {
+            result = getRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new GsonBuilder().setLenient().create();
+                //Log.i("info", result);
+                vAnswers = gson.fromJson(result, Answer[].class);
+                if (vAnswers.length > 0) {
+                    lstAnswers.addAll(Arrays.asList(vAnswers));
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return lstAnswers;
+    }
+
     //Get all user queries
     public static ArrayList<Query> getUserQueries(){
-        String parameters = qaURL + "queries/user/" + account.getIdUser();
+        String parameters = requestURL + "queries/user/" + account.getIdUser();
         String result;
         Query[] vQueries;
         ArrayList<Query> lstQueries = new ArrayList<>();
@@ -178,7 +224,7 @@ public class Tools {
 
     //Get all user answers
     public static ArrayList<Answer> getUserAnswers(){
-        String parameters = qaURL + "answers/user/" + account.getIdUser();
+        String parameters = requestURL + "answers/user/" + account.getIdUser();
         String result;
         Answer[] vAnswers;
         ArrayList<Answer> lstAnswers = new ArrayList<>();
@@ -207,7 +253,7 @@ public class Tools {
     }
 
     public static boolean postQuery(Query q){
-        String parameters = qaURL + "queries/create";
+        String parameters = requestURL + "queries/create";
         String result;
 
         HttpPostRequest postRequest = new HttpPostRequest(q);
@@ -236,7 +282,7 @@ public class Tools {
     }
 
     public static boolean postAnswer(Answer a){
-        String parameters = qaURL + "answers/create";
+        String parameters = requestURL + "answers/create";
         String result;
 
         HttpPostRequest postRequest = new HttpPostRequest(a);
@@ -264,9 +310,39 @@ public class Tools {
         return false;
     }
 
+    public static boolean putCorrect(long id){
+        String parameters = requestURL + "answers/correct/" + id;
+        String result;
+
+        HttpPutRequest putRequest = new HttpPutRequest(null);
+        try {
+            result = putRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new Gson();
+                Answer tmp = gson.fromJson(result, Answer.class);
+                if (tmp != null) {
+                    //Log.i("INFO", String.valueOf(tmp.getIdUser()));
+                    return true;
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return false;
+    }
+
     //Get all documents
     public static ArrayList<Document> getDocuments(){
-        String parameters = documentURL + "documents";
+        String parameters = requestURL + "documents";
         String result;
         Document[] vDocument;
         ArrayList<Document> lstDocuments = new ArrayList<>();
@@ -296,7 +372,7 @@ public class Tools {
 
     //Get all user documents
     public static ArrayList<Document> getUserDocuments(){
-        String parameters = documentURL + "documents/user/" + account.getIdUser();
+        String parameters = requestURL + "documents/user/" + account.getIdUser();
         String result;
         Document[] vDocument;
         ArrayList<Document> lstDocuments = new ArrayList<>();
@@ -325,7 +401,7 @@ public class Tools {
     }
 
     public static boolean postDocument(Document d){
-        String parameters = documentURL + "documents/create";
+        String parameters = requestURL + "documents/create";
         String result;
 
         HttpPostRequest postRequest = new HttpPostRequest(d);
@@ -355,7 +431,7 @@ public class Tools {
 
     //Get all user documents
     public static ArrayList<Review> getDocumentReviews(){
-        String parameters = documentURL + "/documents/" + document.getId() + "/reviews";
+        String parameters = requestURL + "/documents/" + document.getId() + "/reviews";
         String result;
         Review[] vReview;
         ArrayList<Review> lstReviews = new ArrayList<>();
@@ -384,7 +460,36 @@ public class Tools {
     }
 
     public static boolean postReview(Review r){
-        String parameters = documentURL + "reviews/create";
+        String parameters = requestURL + "reviews/create";
+        String result;
+
+        HttpPostRequest postRequest = new HttpPostRequest(r);
+        try {
+            result = postRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new Gson();
+                Review tmp = gson.fromJson(result, Review.class);
+                if (tmp != null) {
+                    return true;
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return false;
+    }
+
+    public static boolean postReport(Report r){
+        String parameters = requestURL + "reports/" + account.getIdUser() + "/create";
         String result;
 
         HttpPostRequest postRequest = new HttpPostRequest(r);

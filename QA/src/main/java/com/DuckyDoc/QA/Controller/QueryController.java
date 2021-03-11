@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class QueryController {
 
     @Autowired

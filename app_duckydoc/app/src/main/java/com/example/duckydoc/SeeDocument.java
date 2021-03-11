@@ -74,6 +74,9 @@ public class SeeDocument extends AppCompatActivity {
             case(R.id.addReview):
                 startActivity(new Intent(this, NewReview.class));
                 break;
+            case(R.id.addReport):
+                startActivity(new Intent(this, NewReport.class));
+                break;
         }
         return true;
     }

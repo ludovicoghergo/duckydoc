@@ -4,5 +4,8 @@
     <item
         android:id="@+id/addReview"
         android:title="@string/aggiungi_recensione" />
+    <item
+        android:id="@+id/addReport"
+        android:title="@string/aggiungi_report" />
 
 </menu>

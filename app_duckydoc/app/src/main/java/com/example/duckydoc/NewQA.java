@@ -65,7 +65,7 @@ public class NewQA extends AppCompatActivity {
         // Set up the buttons
         builder.setPositiveButton("Si", (dialog, which) -> {
             if(query){
-                Query query = new Query(new User(Tools.account.getIdUser(), Tools.account.getNome()), testo, dataCreazione);
+                Query query = new Query(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), testo, dataCreazione);
                 if(!Tools.postQuery(query)){
                     error("Impossibile inviare la richiesta");
                     return;
@@ -73,12 +73,11 @@ public class NewQA extends AppCompatActivity {
                 onBackPressed();
             }
             else{
-                Answer answer = new Answer(new User(Tools.account.getIdUser(), Tools.account.getNome()), testo, dataCreazione, false, Tools.query);
+                Answer answer = new Answer(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), testo, dataCreazione, false, Tools.query);
                 if(!Tools.postAnswer(answer)){
                     error("Impossibile inviare la risposta");
                     return;
                 }
-                Tools.query.addAnswer(answer);
                 onBackPressed();
             }
         });

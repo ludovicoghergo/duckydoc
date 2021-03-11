@@ -60,7 +60,7 @@ public class SeeQuery extends AppCompatActivity {
         lblData.setText(formatedDate);
 
         ListView listViewAnswer = findViewById(R.id.lstAnswers);
-        lstAnswerAdapter = new LstAnswerQueryAdapter(this, R.layout.activity_lst_answer_query_adapter, query.getAnswers());
+        lstAnswerAdapter = new LstAnswerQueryAdapter(this, R.layout.activity_lst_answer_query_adapter, Tools.getQueryAnswers(Tools.query.getId()));
         listViewAnswer.setAdapter(lstAnswerAdapter);
     }
 

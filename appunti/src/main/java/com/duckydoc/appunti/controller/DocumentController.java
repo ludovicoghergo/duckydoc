@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class DocumentController {
 
     private final FileService fileService;

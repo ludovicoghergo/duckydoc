@@ -2,6 +2,7 @@ package com.example.duckydoc;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.duckydoc.DAO.Answer;
+import com.example.duckydoc.DAO.Query;
+import com.example.duckydoc.DAO.Tools;
+import com.example.duckydoc.DAO.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +30,7 @@ public class LstAnswerQueryAdapter extends ArrayAdapter<Answer> {
     Context context;
     int resource;
     List<Answer> lstAnswers;
+
     public LstAnswerQueryAdapter(Context context, int resource, List<Answer> lstAnswers){
         super(context, resource, lstAnswers);
         this.context = context;
@@ -36,12 +42,13 @@ public class LstAnswerQueryAdapter extends ArrayAdapter<Answer> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(resource, null);
+        @SuppressLint("ViewHolder") View view = inflater.inflate(resource, null);
 
         TextView lblUser = view.findViewById(R.id.lblUserAnswer);
         TextView lblAnswer = view.findViewById(R.id.lblAnswer);
         TextView lblData = view.findViewById(R.id.lblDataAnswer);
         CheckBox chkCorrect = view.findViewById(R.id.chkCorrectAnswer);
+        Button btCorretta = view.findViewById(R.id.btAnswerCorrect);
 
         final Answer answer = lstAnswers.get(position);
 
@@ -59,8 +66,28 @@ public class LstAnswerQueryAdapter extends ArrayAdapter<Answer> {
         lblUser.setText(answer.getUser().getUsername());
         lblAnswer.setText(answer.getText());
         lblData.setText(formatedDate);
-        Log.i("correct", String.valueOf(answer.isCorrect()));
         chkCorrect.setChecked(answer.isCorrect());
+        if(answer.isCorrect() || answer.getQuery().getUser().getId() != Tools.account.getIdUser()){
+            btCorretta.setVisibility(View.GONE);
+        }
+
+        btCorretta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Create the input dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Sei sicuro che la risposta sia corretta?");
+                // Set up the buttons
+                builder.setPositiveButton("Si", (dialog, which) -> {
+                    if(Tools.putCorrect(answer.getId())){
+                        answer.setCorrect(true);
+                        chkCorrect.setChecked(true);
+                        btCorretta.setVisibility(View.GONE);
+                    }
+                });
+                builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
+                builder.show();
+            }
+        });
 
         return view;
     }

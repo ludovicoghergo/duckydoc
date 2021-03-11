@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class UtenteController {
     @Autowired
     UtenteRepository repository;
@@ -35,8 +35,8 @@ public class UtenteController {
 
     @PostMapping("utenti/create")
     public Utente postUtente(@RequestBody Utente utente) {
-        repository.save(utente);
+        Utente u = repository.save(utente);
         runner.sendMessage(utente);
-        return utente;
+        return u;
     }
 }

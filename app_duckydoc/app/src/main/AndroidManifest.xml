@@ -14,8 +14,10 @@
         android:theme="@style/Theme.DuckyDoc"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-        <activity android:name=".NewReview"></activity>
-        <activity android:name=".lstReviewAdapter"
+        <activity android:name=".NewReport"></activity>
+        <activity android:name=".NewReview" />
+        <activity
+            android:name=".lstReviewAdapter"
             tools:ignore="Instantiatable" />
         <activity android:name=".SeeReviews" />
         <activity android:name=".DocumentFilter" />

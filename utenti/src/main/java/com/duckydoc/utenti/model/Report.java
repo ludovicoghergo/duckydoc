@@ -10,7 +10,6 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
     @Column(name = "documentId")
     private long documentId;
 

@@ -40,4 +40,8 @@
     <string name="aggiungi_recensione">Aggiungi recensione</string>
     <string name="nuova_recensione">Nuova recensione</string>
     <string name="voto">Voto</string>
+    <string name="nuovo_report">Nuovo report</string>
+    <string name="inserisci_testo">Inserisci testo</string>
+    <string name="aggiungi_report">Aggiungi report</string>
+    <string name="esatta">Esatta</string>
 </resources>
