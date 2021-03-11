@@ -32,7 +32,7 @@ public class User {
         return id;
     }
 
-    public void setIdUser(long id) {
+    public void setIdUser(int id) {
         this.id = id;
     }
 
@@ -46,7 +46,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "Answer[id=" + id + ", username=" + username + "]";
+        return "User[id=" + id + ", username=" + username + "]";
     }
 }
-
