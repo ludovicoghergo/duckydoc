@@ -96,7 +96,7 @@ services:
   Utenti:
     build: ./utenti
     image: appbootrestutenti
-    container_name: appUtenti
+    container_name: Utenti
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
     ports:
@@ -126,6 +126,13 @@ services:
        - pgadminut-data:/var/lib/pgadmin
     links:
       - "dbutenti:pgsql-server"
+      
+  Gateway:
+    build: ./Gateway
+    image: appbootrestgateway
+    container_name: Gateway
+    ports:
+      - "8085:8080"
 
 volumes:
   dbappunti-data:

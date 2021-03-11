@@ -3,24 +3,37 @@ package com.example.duckydoc.DAO;
 import androidx.annotation.NonNull;
 
 public class Account {
-    private long idUser;
+    private long id;
+    private String idGoogle;
     private String email;
-    private String nome;
-    private String password;
+    private String name;
+    private String surname;
 
-    public Account(int idUser, String email, String nome, String password) {
-        this.idUser = idUser;
+    public Account(String idGoogle, String email, String name, String surname) {
+        this.idGoogle = idGoogle;
         this.email = email;
-        this.nome = nome;
-        this.password = password;
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public Account(int idUser, String idGoogle, String email, String name, String surname) {
+        this.id = idUser;
+        this.idGoogle = idGoogle;
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public Account(long idUser) {
+        this.id = idUser;
     }
 
     public long getIdUser() {
-        return idUser;
+        return id;
     }
 
     public void setIdUser(long idUser) {
-        this.idUser = idUser;
+        this.id = idUser;
     }
 
     public String getEmail() {
@@ -31,24 +44,27 @@ public class Account {
         this.email = email;
     }
 
-    public String getNome() {
-        return nome;
+    public String getIdGoogle() {
+        return idGoogle;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setIdGoogle(String idGoogle) {
+        this.idGoogle = idGoogle;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @NonNull
-    public String toString(){
-        return nome + ", email:" + email + ", password:" + password;
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }

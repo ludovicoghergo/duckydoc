@@ -51,7 +51,8 @@ public class NewDocument extends AppCompatActivity {
         Date date = new Date();
         int dataCreazione = Integer.parseInt(format.format(date));
 
-        Document document = new Document(titolo, "pdf", dataCreazione, prezzo, descrizione, universita, anno, corso, "URL", new User(Tools.account.getIdUser(), Tools.account.getNome()));
+        Document document = new Document(titolo, "pdf", dataCreazione, prezzo, descrizione, universita, anno, corso, "URL",
+                new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()));
 
         //Create the input dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -64,6 +65,7 @@ public class NewDocument extends AppCompatActivity {
                     error("Impossibile inviare il documento");
                     return;
                 }
+                Tools.lstDocuments.add(document);
                 finish();
             }
         });

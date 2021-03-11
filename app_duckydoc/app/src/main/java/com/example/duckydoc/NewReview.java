@@ -40,7 +40,7 @@ public class NewReview extends AppCompatActivity {
         Date date = new Date();
         int dataCreazione = Integer.parseInt(format.format(date));
 
-        Review review = new Review(voto, text, dataCreazione, new User(Tools.account.getIdUser(), Tools.account.getNome()), Tools.document);
+        Review review = new Review(voto, text, dataCreazione, new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), Tools.document);
 
         //Create the input dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
