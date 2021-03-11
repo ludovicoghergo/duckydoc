@@ -30,7 +30,7 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
+              <small>*Please respect the rules</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
