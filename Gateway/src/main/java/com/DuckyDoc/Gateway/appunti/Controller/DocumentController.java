@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
@@ -35,16 +32,16 @@ public class DocumentController {
     public List<Document> getDocument(@PathVariable(value = "user_id") Long user_id) {
         System.out.println("Gateway user document");
         ResponseEntity<List<Document>> response =  restTemplate
-                .exchange(ip+"8081/document/user/"+user_id, HttpMethod.GET, null,
+                .exchange(ip+"8081/documents/user/"+user_id, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
 
-    @PostMapping(value = "documents/create")
-    public Document postDocument(@RequestBody Document document) {
+    @PostMapping(value = "documents/createapp")
+    public boolean postDocument(@RequestBody Document document) {
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpEntity<?> test = new HttpEntity<Object>(document, requestHeaders);
-        ResponseEntity<Document> response = restTemplate.exchange(ip+"8081/documents/create", HttpMethod.POST, test, new ParameterizedTypeReference<>() {});
+        ResponseEntity<Boolean> response = restTemplate.exchange(ip+"8081/documents/createapp", HttpMethod.POST, test, new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
 

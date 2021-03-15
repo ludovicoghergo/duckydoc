@@ -59,7 +59,7 @@ public class Document {
     @Column(name = "course")
     private String course;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @PrimaryKeyJoinColumn(name = "userId")
     private User user;
 
