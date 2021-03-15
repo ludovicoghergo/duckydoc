@@ -1,18 +1,18 @@
 package com.duckydoc.appunti.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.duckydoc.appunti.FileService.FileService;
 import com.duckydoc.appunti.model.Document;
+import com.duckydoc.appunti.model.User;
 import com.duckydoc.appunti.repo.DocumentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.duckydoc.appunti.model.FileResponse;
-import com.duckydoc.appunti.FileService.FileService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -43,7 +43,7 @@ public class DocumentController {
     }
 
     @GetMapping(value = "/documents/user/{user_id}")
-    public List<Document> getUserDocument(@PathVariable long user_id) {
+    public List<Document> getUserDocument(@PathVariable int user_id) {
         System.out.println("Get user documents...");
         List<Document> documents = repository.findByUserId(user_id);
 
@@ -55,7 +55,7 @@ public class DocumentController {
     }
     //Sarà da cancellare
     @PostMapping(value = "/documents/create")
-    public ResponseEntity<String> upload(@RequestParam("file") String file, @RequestParam("price") int price,
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("price") int price,
             @RequestParam("date") int creationData, @RequestParam("desc") String description,
             @RequestParam("university") String university, @RequestParam("year") int year,
             @RequestParam("course") String course, @RequestParam("userId") int userId,
@@ -66,6 +66,7 @@ public class DocumentController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(String.format("File uploaded successfully: %s", /*file.getOriginalFilename()*/""));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("Could not upload the file: %s!", /*file.getOriginalFilename()*/""));
         }
@@ -112,7 +113,7 @@ public class DocumentController {
     }
 
     @GetMapping("/documents/{documentId}")
-    public Document getDocumentById(@PathVariable long documentId) {
+    public Document getDocumentById(@PathVariable int documentId) {
         return repository.findById(documentId);
     }
 }

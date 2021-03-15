@@ -93,10 +93,11 @@ export default {
       this.formData.append("title", this.title);
       this.formData.append("university", this.university);
       this.formData.append("year", this.year);
-      this.formData.append("userId", id);
-      this.formData.append("username", name);
+
       this.formData.append("price", this.price);
       this.formData.append("course", this.course);
+      this.formData.append("userId", id);
+      this.formData.append("username", name);
 
       axios
         .post("http://localhost:8081/api/documents/create", this.formData)
@@ -114,6 +115,7 @@ export default {
             console.log("Error", error.message);
           }
         });
+      this.formData = new FormData();
     },
   },
   data() {
