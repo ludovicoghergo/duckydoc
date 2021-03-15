@@ -10,9 +10,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tools {
     public static final String requestURL = "http://192.168.1.28:8085/api/";
@@ -294,7 +297,7 @@ public class Tools {
             }
             else {
                 Gson gson = new Gson();
-                Query tmp = gson.fromJson(result, Query.class);
+                Answer tmp = gson.fromJson(result, Answer.class);
                 if (tmp != null) {
                     return true;
                 }
@@ -401,8 +404,10 @@ public class Tools {
     }
 
     public static boolean postDocument(Document d){
-        String parameters = requestURL + "documents/create";
+        String parameters = requestURL + "documents/createapp";
         String result;
+
+        Log.i("doc", "start");
 
         HttpPostRequest postRequest = new HttpPostRequest(d);
         try {
@@ -410,21 +415,25 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
+                Log.i("doc", "generic error");
             }
             else {
                 Gson gson = new Gson();
-                Document tmp = gson.fromJson(result, Document.class);
-                if (tmp != null) {
+                boolean tmp = gson.fromJson(result, boolean.class);
+                if (tmp) {
+                    Log.i("doc", "ok");
                     return true;
                 }
                 else{
                     sqlErrorContainer = genericError;
+                    Log.i("doc", "altro errore");
                     return false;
                 }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
+            Log.i("doc", "catch error");
         }
         return false;
     }

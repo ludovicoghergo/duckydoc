@@ -1,5 +1,6 @@
 package com.example.duckydoc;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,32 +8,49 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.duckydoc.DAO.Answer;
 import com.example.duckydoc.DAO.Document;
-import com.example.duckydoc.DAO.Query;
 import com.example.duckydoc.DAO.Tools;
 import com.example.duckydoc.DAO.User;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NewDocument extends AppCompatActivity {
 
+    public final int RESULT_LOAD_FILE = 156;
+    Uri selectedFile;
+    TextView txtScegli;
+
+    @SuppressLint({"WrongViewCast", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_document);
         setTitle("DuckyDoc - Nuovo documento");
+
+        txtScegli = findViewById(R.id.txtScegliFile);
+        txtScegli.setText("Nessun file selezionato");
     }
 
-    public void btConferma_Click(View view){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void btConferma_Click(View view) throws IOException {
         if(!datiCorretti()){
             return;
         }
@@ -50,9 +68,12 @@ public class NewDocument extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
         int dataCreazione = Integer.parseInt(format.format(date));
+        File file = new File(selectedFile.getPath());
 
-        Document document = new Document(titolo, "pdf", dataCreazione, prezzo, descrizione, universita, anno, corso, "URL",
-                new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()));
+        Document document = new Document(titolo, file.getName(), Files.probeContentType(file.toPath()), dataCreazione,
+                 prezzo, descrizione, universita, anno, corso, new User(Tools.account.getIdUser(),
+                Tools.account.getName() + " " + Tools.account.getSurname()));
+
 
         //Create the input dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -61,12 +82,22 @@ public class NewDocument extends AppCompatActivity {
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!Tools.postDocument(document)){
-                    error("Impossibile inviare il documento");
+                try {
+                    byte[] b = getBytes();
+                    document.setData(b);
+                    document.setSize((long) b.length);
+
+                    if(!Tools.postDocument(document)){
+                        error("Impossibile inviare il documento");
+                        return;
+                    }
+                    Tools.lstDocuments.add(document);
+                    finish();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    error("Impossibile convertire il documento");
                     return;
                 }
-                Tools.lstDocuments.add(document);
-                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -144,7 +175,69 @@ public class NewDocument extends AppCompatActivity {
             lblDescrizione.setText("");
         }
 
+        if(selectedFile == null){
+            txtScegli.setTextColor(Color.RED);
+            correct = false;
+        }
+
         return correct;
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    public void btScegli_Click(View view){
+        //get a file
+        /*Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
+        //Uri uri = Uri.parse(Environment.getDataDirectory().getPath());
+        chooser.addCategory(Intent.CATEGORY_OPENABLE);
+        chooser.setType("*//*");
+        try {
+            startActivityForResult(chooser, RESULT_LOAD_FILE);
+        }
+        catch (android.content.ActivityNotFoundException ex)
+        {
+            Toast.makeText(this, "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }*/
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+
+        startActivityForResult(intent, RESULT_LOAD_FILE);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_FILE && resultCode == RESULT_OK) {
+            selectedFile = data.getData();
+
+            Log.i("result", selectedFile.getPath());
+
+            txtScegli.setTextColor(Color.BLACK);
+            txtScegli.setText(selectedFile.getPath());
+        }
+    }
+
+    public byte[] getBytes() throws IOException {
+        InputStream iStream = null;
+        try {
+            iStream = getContentResolver().openInputStream(selectedFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = iStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     public void error(String text){

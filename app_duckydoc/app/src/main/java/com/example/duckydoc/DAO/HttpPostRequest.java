@@ -44,7 +44,7 @@ public class HttpPostRequest extends AsyncTask<String, Void, String> {
             if (this.postData != null) {
                 Gson gson = new Gson();
                 OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-                Log.i("body", gson.toJson(postData));
+                //Log.i("body", gson.toJson(postData));
                 writer.write(gson.toJson(postData));
                 writer.flush();
             }

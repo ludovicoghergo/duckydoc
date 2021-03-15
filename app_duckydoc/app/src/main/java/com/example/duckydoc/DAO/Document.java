@@ -3,32 +3,35 @@ package com.example.duckydoc.DAO;
 public class Document {
     private long id;
     private String title;
+    private String nameFile;
     private String format;
+    private Long size;
     private int creationData;
+    private byte[] data;
     private int price;
     private String description;
     private String university;
     private int year;
     private String course;
-    private String fileUrl;
     private User user;
 
-    public Document(long id, String title, String format, int creationData, int price, String description, String university, int year, String course, String fileUrl, User user) {
-        this.id = id;
+    public Document(String title, String nameFile, String format, Long size, int creationData, int price, String description, String university, int year, String course, User user) {
         this.title = title;
+        this.nameFile = nameFile;
         this.format = format;
+        this.size = size;
         this.creationData = creationData;
         this.price = price;
         this.description = description;
         this.university = university;
         this.year = year;
         this.course = course;
-        this.fileUrl = fileUrl;
         this.user = user;
     }
 
-    public Document(String title, String format, int creationData, int price, String description, String university, int year, String course, String fileUrl, User user) {
+    public Document(String title, String nameFile, String format, int creationData, int price, String description, String university, int year, String course, User user) {
         this.title = title;
+        this.nameFile = nameFile;
         this.format = format;
         this.creationData = creationData;
         this.price = price;
@@ -36,8 +39,15 @@ public class Document {
         this.university = university;
         this.year = year;
         this.course = course;
-        this.fileUrl = fileUrl;
         this.user = user;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public long getId() {
@@ -76,8 +86,12 @@ public class Document {
         return course;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public Long getSize() {
+        return size;
     }
 
     public User getUser() {

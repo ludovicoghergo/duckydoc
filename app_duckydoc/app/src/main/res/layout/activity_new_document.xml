@@ -10,13 +10,13 @@
         android:id="@+id/btConferma"
         android:layout_width="144dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:backgroundTint="@color/Button"
         android:onClick="btConferma_Click"
         android:text="@string/conferma"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDescrizioneErr" />
+        app:layout_constraintTop_toBottomOf="@+id/txtScegliFile" />
 
     <TextView
         android:id="@+id/lblPrezzoErr"
@@ -31,15 +31,14 @@
         android:id="@+id/txtCorsoDocumento"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/corso"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/txtTitoloDocumento"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtTitoloDocumento"
-        app:layout_constraintTop_toBottomOf="@+id/lblUniversitaErr"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/lblUniversitaErr" />
 
     <TextView
         android:id="@+id/lblCorsoErr"
@@ -54,7 +53,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/nuovo_documento"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -89,14 +88,13 @@
         android:id="@+id/txtUniversitaDocumento"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/universit"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/txtTitoloDocumento"
         app:layout_constraintStart_toStartOf="@+id/txtTitoloDocumento"
-        app:layout_constraintTop_toBottomOf="@+id/lblTitoloErr"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/lblTitoloErr" />
 
     <TextView
         android:id="@+id/lblUniversitaErr"
@@ -120,14 +118,13 @@
         android:id="@+id/txtPrezzo"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/prezzo"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblCorsoErr"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/lblCorsoErr" />
 
     <TextView
         android:id="@+id/textView7"
@@ -149,18 +146,17 @@
     <EditText
         android:id="@+id/txtDescrizioneDocumento"
         android:layout_width="0dp"
-        android:layout_height="128dp"
+        android:layout_height="112dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/descrizione_max_255_caratteri"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblAnnoErr"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/lblAnnoErr" />
 
     <TextView
         android:id="@+id/lblDescrizioneErr"
@@ -178,5 +174,27 @@
         app:layout_constraintEnd_toEndOf="@+id/btConferma"
         app:layout_constraintStart_toStartOf="@+id/btConferma"
         app:layout_constraintTop_toBottomOf="@+id/btConferma" />
+
+    <Button
+        android:id="@+id/btScegli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/Button"
+        android:onClick="btScegli_Click"
+        android:text="@string/scegli_file"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDescrizioneErr" />
+
+    <TextView
+        android:id="@+id/txtScegliFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btScegli" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

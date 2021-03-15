@@ -44,4 +44,5 @@
     <string name="inserisci_testo">Inserisci testo</string>
     <string name="aggiungi_report">Aggiungi report</string>
     <string name="esatta">Esatta</string>
+    <string name="scegli_file">Scegli file</string>
 </resources>
