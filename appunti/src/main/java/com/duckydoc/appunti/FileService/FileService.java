@@ -23,15 +23,16 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public void save(MultipartFile file, int price, int creationData, String description, String university, int year,
+    public void save(String file, int price, int creationData, String description, String university, int year,
             String course, int userId, String username, String title) throws IOException {
+
         Document fileEntity = new Document();
         // User user = new User(userId, username);
         fileEntity.setTitle(title);
-        fileEntity.setnameFile(StringUtils.cleanPath(file.getOriginalFilename()));
-        fileEntity.setFormat(file.getContentType());
-        fileEntity.setData(file.getBytes());
-        fileEntity.setSize(file.getSize());
+        //fileEntity.setnameFile(StringUtils.cleanPath(file.getOriginalFilename()));
+        //fileEntity.setFormat(file.getContentType());
+        //fileEntity.setData(file.getBytes());
+        //fileEntity.setSize(file.getSize());
         fileEntity.setPrice(price);
         fileEntity.setDescription(description);
         fileEntity.setUniversity(university);

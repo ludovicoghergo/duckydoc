@@ -11,6 +11,9 @@ import java.util.List;
 public class Document {
     private long id;
     private String title;
+    private String nameFile;
+    private byte[] data;
+    private Long size;
     private String format;
     private int creationData;
     private int price;
@@ -18,7 +21,6 @@ public class Document {
     private String university;
     private int year;
     private String course;
-    private String fileUrl;
     private User user;
     private List<Review> reviews;
 }
