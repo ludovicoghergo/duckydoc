@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -102,14 +103,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            if(!handleSignInResult(task)){
+                TextView lbl = findViewById(R.id.lblLogin);
+                lbl.setTextColor(Color.RED);
+                lbl.setText("Login non eseguito");
+                return;
+            }
 
             startActivity(new Intent(this, Home.class));
             finish();
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    private boolean handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if(account != null){
@@ -117,27 +123,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(a == null){
                     a = new Account(account.getId(), account.getEmail(), account.getGivenName(), account.getFamilyName());
                     Tools.account = a;
-                    if(!Tools.postUser(a)){
-                        TextView lbl = findViewById(R.id.lblLogin);
-                        lbl.setTextColor(Color.RED);
-                        lbl.setText("Login non eseguito");
-                        return;
-                    }
+                    return Tools.postUser(a);
                 }
                 else{
                     Tools.account = a;
+                    return true;
                 }
-                startActivity(new Intent(this, Home.class));
-                finish();
             }
-            Log.i("utente", account.getDisplayName() + ", " + account.getGivenName() + ", " + account.getFamilyName() + ", " + account.getId() + ", " + account.getIdToken());
+            return false;
+            //Log.i("utente", account.getDisplayName() + ", " + account.getGivenName() + ", " + account.getFamilyName() + ", " + account.getId() + ", " + account.getIdToken());
 
         } catch (ApiException e) {
             Log.i("TAG", "signInResult:failed code=" + e.getStatusCode());
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            //Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            //updateUI(null);
+            return false;
         }
     }
 

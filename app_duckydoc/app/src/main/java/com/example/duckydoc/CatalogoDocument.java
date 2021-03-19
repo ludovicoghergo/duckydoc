@@ -63,6 +63,7 @@ public class CatalogoDocument extends AppCompatActivity {
             case R.id.newDocument:
                 Intent newDocument = new Intent(this, NewDocument.class);
                 startActivity(newDocument);
+                finish();
                 break;
             case R.id.filterDocument:
                 Intent filters = new Intent(this, DocumentFilter.class);

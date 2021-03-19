@@ -21,15 +21,13 @@ import com.example.duckydoc.DAO.Document;
 import com.example.duckydoc.DAO.Tools;
 import com.example.duckydoc.DAO.User;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class NewDocument extends AppCompatActivity {
@@ -37,6 +35,7 @@ public class NewDocument extends AppCompatActivity {
     public final int RESULT_LOAD_FILE = 156;
     Uri selectedFile;
     TextView txtScegli;
+    Intent i;
 
     @SuppressLint({"WrongViewCast", "SetTextI18n"})
     @Override
@@ -47,6 +46,8 @@ public class NewDocument extends AppCompatActivity {
 
         txtScegli = findViewById(R.id.txtScegliFile);
         txtScegli.setText("Nessun file selezionato");
+
+        i = new Intent(this, CatalogoDocument.class);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -69,8 +70,15 @@ public class NewDocument extends AppCompatActivity {
         Date date = new Date();
         int dataCreazione = Integer.parseInt(format.format(date));
         File file = new File(selectedFile.getPath());
+        String formatType;
+        if(file.getPath().contains("image")){
+            formatType = "image/png";
+        }
+        else{
+            formatType = Files.probeContentType(file.toPath());
+        }
 
-        Document document = new Document(titolo, file.getName(), Files.probeContentType(file.toPath()), dataCreazione,
+        Document document = new Document(titolo, file.getName(), formatType, dataCreazione,
                  prezzo, descrizione, universita, anno, corso, new User(Tools.account.getIdUser(),
                 Tools.account.getName() + " " + Tools.account.getSurname()));
 
@@ -82,22 +90,23 @@ public class NewDocument extends AppCompatActivity {
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                byte[] b = new byte[0];
                 try {
-                    byte[] b = getBytes();
-                    document.setData(b);
-                    document.setSize((long) b.length);
-
-                    if(!Tools.postDocument(document)){
-                        error("Impossibile inviare il documento");
-                        return;
-                    }
-                    Tools.lstDocuments.add(document);
-                    finish();
+                    b = getBytes();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    error("Impossibile convertire il documento");
+                }
+
+                document.setData(b);
+                document.setSize((long) b.length);
+
+                if(!Tools.postDocument(document)){
+                    error("Impossibile inviare il documento");
                     return;
                 }
+                Tools.lstDocuments.add(document);
+                startActivity(i);
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -186,22 +195,9 @@ public class NewDocument extends AppCompatActivity {
     @SuppressLint("QueryPermissionsNeeded")
     public void btScegli_Click(View view){
         //get a file
-        /*Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
-        //Uri uri = Uri.parse(Environment.getDataDirectory().getPath());
-        chooser.addCategory(Intent.CATEGORY_OPENABLE);
-        chooser.setType("*//*");
-        try {
-            startActivityForResult(chooser, RESULT_LOAD_FILE);
-        }
-        catch (android.content.ActivityNotFoundException ex)
-        {
-            Toast.makeText(this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }*/
-
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/pdf");
+        intent.setType("*/*");
 
         startActivityForResult(intent, RESULT_LOAD_FILE);
     }
@@ -249,6 +245,8 @@ public class NewDocument extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        super.onBackPressed();  // optional depending on your needs
+        super.onBackPressed();
+        startActivity(i);
+        finish();
     }
 }

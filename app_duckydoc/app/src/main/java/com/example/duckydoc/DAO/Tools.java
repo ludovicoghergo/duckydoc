@@ -1,21 +1,25 @@
 package com.example.duckydoc.DAO;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.JsonReader;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Tools {
     public static final String requestURL = "http://192.168.1.28:8085/api/";
@@ -86,7 +90,6 @@ public class Tools {
                 Account tmp = gson.fromJson(result, Account.class);
                 if (tmp != null) {
                     account.setIdUser(tmp.getIdUser());
-                    Log.i("INFO", String.valueOf(tmp.getIdUser()));
                     return true;
                 }
                 else{
@@ -403,11 +406,37 @@ public class Tools {
         return lstDocuments;
     }
 
+    public static byte[] downloadDocument(long id){
+        String parameters = requestURL + "documents/download/" + id;
+        byte[] result;
+        HttpGetDocument getRequest = new HttpGetDocument();
+        try {
+            result = getRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new GsonBuilder().setLenient().create();
+                Log.i("download", String.valueOf(result.length));
+                if (result != null) {
+                    return result;
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                    return null;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return null;
+    }
+
     public static boolean postDocument(Document d){
         String parameters = requestURL + "documents/createapp";
         String result;
-
-        Log.i("doc", "start");
 
         HttpPostRequest postRequest = new HttpPostRequest(d);
         try {

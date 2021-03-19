@@ -42,6 +42,10 @@ public class Document {
         this.user = user;
     }
 
+    public byte[] getData() {
+        return data;
+    }
+
     public void setSize(Long size) {
         this.size = size;
     }

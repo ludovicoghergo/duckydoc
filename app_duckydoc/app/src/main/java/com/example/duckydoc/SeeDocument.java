@@ -5,16 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.duckydoc.DAO.Tools;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class SeeDocument extends AppCompatActivity {
 
@@ -79,6 +87,63 @@ public class SeeDocument extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public void btDownload_Click(View view) throws InterruptedException, ExecutionException, IOException {
+        //DOWNLOAD TOOL
+        byte[] res = Tools.downloadDocument(Tools.document.getId());
+
+        if(res != null){
+            Log.i("res", String.valueOf(res.length));
+            Log.i("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
+            try {
+                File file;
+                if(!Tools.document.getNameFile().contains(".")) {
+                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
+                            + Tools.document.getNameFile() + getFormat(Tools.document.getFormat()));
+                    int cnt = 1;
+                    while (file.exists()) {
+                        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
+                                + Tools.document.getNameFile() + "(" + cnt + ")" + getFormat(Tools.document.getFormat()));
+                        cnt++;
+                    }
+                }
+                else{
+                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
+                            + Tools.document.getNameFile());
+                    int cnt = 1;
+                    while (file.exists()) {
+                        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
+                                + "(" + cnt + ")" + Tools.document.getNameFile());
+                        cnt++;
+                    }
+                }
+                if (!file.createNewFile())
+                    return;
+                String path = file.getPath();
+                Log.i("path", path);
+                FileOutputStream stream = new FileOutputStream(path);
+                stream.write(res);
+            } catch (IOException e1) {
+                Log.i("Errore", "errore");
+                e1.printStackTrace();
+            }
+        }
+        else{
+            Log.i("resError", "nullo");
+        }
+    }
+
+    public String getFormat(String format){
+        switch (format){
+            case "application/pdf":
+                return ".pdf";
+            case "image/png":
+                return ".png";
+            case "image/jpg":
+                return ".jpg";
+        }
+        return "";
     }
 
     @Override

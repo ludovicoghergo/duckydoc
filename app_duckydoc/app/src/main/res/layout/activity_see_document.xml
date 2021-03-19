@@ -84,4 +84,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblDataCreazione" />
 
+    <Button
+        android:id="@+id/btDownload"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/Button"
+        android:onClick="btDownload_Click"
+        android:text="Scarica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDescrizioneDocumento" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
