@@ -81,6 +81,7 @@ export default {
     },
     onImageUpload() {
       let file = this.$refs.uploadImage.files[0];
+      console.log(file);
       this.formData = new FormData();
       this.formData.append("file", file);
       console.log("Upload");

@@ -60,9 +60,9 @@ public class DocumentController {
 
     // Sarà da cancellare
     @PostMapping(value = "/documents/create")
-    public ResponseEntity<String> upload(@RequestBody Document requestEntity) {
+    public ResponseEntity<Document> upload(@RequestBody Document requestEntity) {
         System.out.println("stiamo creando dr LUDAH");
-        System.out.println(requestEntity.getPrice());
+        System.out.println(requestEntity.getTitle());
 
         // try {
         // fileService.save(file, doc);
