@@ -29,7 +29,7 @@ public class DocumentController {
     }
 
     @GetMapping("documents/user/{user_id}")
-    public List<Document> getDocument(@PathVariable(value = "user_id") Long user_id) {
+    public List<Document> getDocument(@PathVariable(value = "user_id") int user_id) {
         System.out.println("Gateway user document");
         ResponseEntity<List<Document>> response =  restTemplate
                 .exchange(ip+"8081/documents/user/"+user_id, HttpMethod.GET, null,
@@ -62,6 +62,24 @@ public class DocumentController {
                 .exchange(ip+"8081/documents/" + documentId, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
+    }
+
+    @GetMapping("/documents/download/{documentId}")
+    public ResponseEntity<byte[]> downloadDocument(@PathVariable long documentId) {
+        System.out.println("Gateway download document...");
+        ResponseEntity<Document> respDoc =  restTemplate
+                .exchange(ip+"8081/documents/" + documentId, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<>() {});
+        Document d = respDoc.getBody();
+
+        ResponseEntity<byte[]> respByte =  restTemplate
+                .exchange(ip+"8081/documents/download/" + documentId, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<>() {});
+        //System.out.println(respByte.getBody().length);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + d.getNameFile() + "\"")
+                .contentType(MediaType.valueOf(d.getFormat())).body(respByte.getBody());
     }
 }
 

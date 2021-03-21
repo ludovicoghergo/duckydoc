@@ -2,6 +2,7 @@ package com.duckydoc.appunti.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.duckydoc.appunti.FileService.FileService;
 import com.duckydoc.appunti.model.Document;
@@ -9,7 +10,9 @@ import com.duckydoc.appunti.model.User;
 import com.duckydoc.appunti.repo.DocumentRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,7 +116,28 @@ public class DocumentController {
     }
 
     @GetMapping("/documents/{documentId}")
-    public Document getDocumentById(@PathVariable int documentId) {
-        return repository.findById(documentId);
+    public Document getDocumentById(@PathVariable long documentId) {
+        Optional<Document> d = repository.findById(documentId);
+        if(d.isPresent()){
+            Document document = d.get();
+            document.setData(null);
+            return document;
+        }
+        return null;
+    }
+
+    @GetMapping("/documents/download/{documentId}")
+    public ResponseEntity<byte[]> getFile(@PathVariable long documentId) {
+        Optional<Document> fileEntityOptional = fileService.getFile(documentId);
+
+        if (fileEntityOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Document fileEntity = fileEntityOptional.get();
+        System.out.println(fileEntity.getData().length);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getnameFile() + "\"")
+                .contentType(MediaType.valueOf(fileEntity.getFormat())).body(fileEntity.getData());
     }
 }

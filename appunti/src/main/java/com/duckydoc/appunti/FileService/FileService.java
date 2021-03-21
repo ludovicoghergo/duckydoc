@@ -30,14 +30,10 @@ public class FileService {
             String course, long userId, String username, String title) throws IOException {
         Document fileEntity = new Document();
         User user = repository.findById(userId);
-        if (user == null) {
-            user = new User(userId, username);
-            fileEntity.setUser(user);
 
-        } else {
-            fileEntity.setUser(user);
+        fileEntity.setUser(user);
 
-        }
+
         fileEntity.setTitle(title);
         fileEntity.setnameFile(StringUtils.cleanPath(file.getOriginalFilename()));
         fileEntity.setFormat(file.getContentType());
