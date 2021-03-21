@@ -2,6 +2,8 @@ package com.duckydoc.appunti.model;
 
 import javax.persistence.*;
 import java.util.List;
+
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +35,7 @@ public class Document {
 
     @Column(name = "data")
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     private byte[] data;
 
     @Column(name = "size")
@@ -197,4 +200,5 @@ public class Document {
     public void setSize(Long size) {
         this.size = size;
     }
+
 }

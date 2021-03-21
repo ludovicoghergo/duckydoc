@@ -57,6 +57,7 @@
 
         <v-card-actions class="card-actions">
           <button text @click="fileUpload()">Upload !</button>
+          <button text @click="downloadIt()">TEST</button>
         </v-card-actions>
       </v-card-text>
     </v-card>
@@ -88,19 +89,24 @@ export default {
       var id = this.check_cookie_value("id");
       var name = this.check_cookie_value("name");
       var day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-      this.formData.append("desc", this.desc);
-      this.formData.append("date", day);
-      this.formData.append("title", this.title);
-      this.formData.append("university", this.university);
-      this.formData.append("year", this.year);
 
-      this.formData.append("price", this.price);
-      this.formData.append("course", this.course);
-      this.formData.append("userId", id);
-      this.formData.append("username", name);
+      const json = JSON.stringify({
+        desc: this.desc,
+        date: day,
+        title: this.title,
+        university: this.university,
+        year: this.year,
+        price: this.price,
+        course: this.course,
+        user: {
+          id: id,
+          username: name,
+        },
+      });
+      this.formData.append("document", json);
 
       axios
-        .post("http://localhost:8081/api/documents/create", this.formData)
+        .post("http://localhost:8085/api/documents/create", this.formData)
         .then(function (response) {
           console.log(response);
         })
@@ -118,6 +124,11 @@ export default {
       this.formData = new FormData();
     },
   },
+  Mount() {
+    if (this.check_cookie_value("id") == -1) {
+      this.$router.push("/");
+    }
+  },
   data() {
     return {
       question_txt: "",
@@ -130,7 +141,6 @@ export default {
       price: 0,
     };
   },
-  mounted() {},
 };
 </script>
 <style scoped>

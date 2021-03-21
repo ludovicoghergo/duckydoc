@@ -61,6 +61,11 @@ export default {
         });
     },
   },
+  beforeMount() {
+    if (this.check_cookie_value("id") == -1) {
+      this.$router.push("/");
+    }
+  },
   data() {
     return {
       question_txt: "",
