@@ -2,7 +2,7 @@ package com.duckydoc.appunti.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class DocumentApp implements Serializable{
+public class DocumentApp{
     private MultipartFile file;
     private String doc;
 

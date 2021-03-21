@@ -141,7 +141,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("http://localhost:8081/documents/").then((response) => {
+    axios.get("http://localhost:8085/api/documents/").then((response) => {
       this.documents = response.data;
     });
   },
