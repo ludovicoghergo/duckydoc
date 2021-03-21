@@ -52,7 +52,7 @@
     </v-app-bar>
 
     <v-main>
-      <router-view />
+      <router-view class="full_heigth" />
     </v-main>
   </v-app>
 </template>
@@ -101,3 +101,7 @@ export default {
   }),
 };
 </script>
+<style lang="sass">
+.full_heigth
+  min-height: 100vh
+</style>
