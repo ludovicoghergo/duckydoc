@@ -63,7 +63,6 @@ public class DocumentController {
         return documents;
     }
 
-    // Sarà da cancellare
     @PostMapping(value = "/documents/create")
     public ResponseEntity<String> upload(@RequestBody Document requestEntity) {
         System.out.println("stiamo creando dr LUDAH");
