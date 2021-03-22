@@ -29,6 +29,7 @@ public class UtenteController {
 
     @GetMapping("/utenti/{idUtente}")
     public Utente getUtente(@PathVariable String idUtente) {
+        System.out.println("Dentro al microservizo ludo");
         Utente utente = repository.findByIdGoogle(idUtente);
         return utente;
     }
