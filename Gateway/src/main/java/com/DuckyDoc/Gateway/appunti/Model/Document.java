@@ -31,6 +31,14 @@ public class Document {
     public void setId(long id) {
         this.id = id;
     }
+    
+    public String getnameFile() {
+        return nameFile;
+    }
+
+    public void setnameFile(String name) {
+        this.nameFile = name;
+    }
 
     public String getTitle() {
         return title;
