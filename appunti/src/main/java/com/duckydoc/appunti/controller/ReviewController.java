@@ -30,6 +30,9 @@ public class ReviewController {
     @GetMapping("/documents/{documentId}/reviews")
     public List<Review> getReviewsByDocument(@PathVariable long documentId) {
         List<Review> reviews = repository.findByDocumentId(documentId);
+        for(int i = 0; i < reviews.size(); i++){
+            reviews.get(i).getDocument().setData(null);
+        }
         return reviews;
     }
 

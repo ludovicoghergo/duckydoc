@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface DocumentRepository extends CrudRepository<Document, Long> {
         Optional<Document> findById(long id);
 
-        List<Document> findByUserId(int user_id);
+        List<Document> findByUserId(long user_id);
 
         List<Document> findByUniversityContainsAndCourseContainsAndFormatContainsAndYear(String university,
                         String course, String format, int year);
