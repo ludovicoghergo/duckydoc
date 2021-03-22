@@ -19,17 +19,17 @@ public class Utente {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "isModeratore")
-    private boolean isModeratore;
+    @Column(name = "isMod")
+    private boolean isMod;
 
     @OneToMany(mappedBy = "user")
     private List<Report> reports;
 
-    public Utente(String nome, String email, String password, boolean isModeratore) {
+    public Utente(String nome, String email, String password, boolean isMod) {
         this.nome = nome;
         this.email = email;
         this.password = password;
-        this.isModeratore = isModeratore;
+        this.isMod = isMod;
     }
 
     public Utente() {
@@ -67,11 +67,11 @@ public class Utente {
         this.password = password;
     }
 
-    public boolean isModeratore() {
-        return isModeratore;
+    public boolean isMod() {
+        return isMod;
     }
 
-    public void setModeratore(boolean moderatore) {
-        isModeratore = moderatore;
+    public void setMod(boolean mod) {
+        isMod = mod;
     }
 }

@@ -132,7 +132,7 @@ public class DocumentController {
         return null;
     }
 
-
+    @GetMapping("/documents/download/{documentId}")
     public ResponseEntity<byte[]> getFile(@PathVariable long documentId) {
         Optional<Document> fileEntityOptional = fileService.getFile(documentId);
 
