@@ -9,9 +9,10 @@ import java.util.List;
 @NoArgsConstructor
 public class Utente {
     private long id;
-    private String nome;
+    private String idGoogle;
+    private String name;
     private String email;
-    private String password;
-    private boolean isModeratore;
+    private String surname;
+    private boolean isMod;
     private List<Report> reports;
 }

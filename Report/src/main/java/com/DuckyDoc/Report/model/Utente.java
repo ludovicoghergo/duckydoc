@@ -10,14 +10,17 @@ public class Utente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name="nome")
-    private String nome;
+    @Column(name = "idGoogle")
+    private String idGoogle;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "surname")
+    private String surname;
 
     @Column(name = "isMod")
     private boolean isMod;
@@ -25,10 +28,11 @@ public class Utente {
     @OneToMany(mappedBy = "user")
     private List<Report> reports;
 
-    public Utente(String nome, String email, String password, boolean isMod) {
-        this.nome = nome;
+    public Utente(String idGoogle, String name, String email, String surname, boolean isMod) {
+        this.idGoogle = idGoogle;
+        this.name = name;
         this.email = email;
-        this.password = password;
+        this.surname = surname;
         this.isMod = isMod;
     }
 
@@ -43,12 +47,12 @@ public class Utente {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -59,12 +63,12 @@ public class Utente {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSurname() {
+        return this.surname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public boolean isMod() {
@@ -72,6 +76,14 @@ public class Utente {
     }
 
     public void setMod(boolean mod) {
-        isMod = mod;
+        this.isMod = mod;
+    }
+
+    public String getidGoogle() {
+        return idGoogle;
+    }
+
+    public void setidGoogle(String name) {
+        this.idGoogle = name;
     }
 }
