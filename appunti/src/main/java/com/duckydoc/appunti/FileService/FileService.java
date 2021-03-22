@@ -36,7 +36,6 @@ public class FileService {
         JsonObject data = new JsonParser().parse(doc).getAsJsonObject();
 
         Document fileEntity = new Document();
-
         User user = repository.findById(gson.fromJson(data.get("user"), User.class).getId());
         if (user == null) {
             user = gson.fromJson(data.get("user"), User.class);

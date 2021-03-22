@@ -64,14 +64,6 @@ public class Document {
         this.price = price;
     }
 
-    public String getnameFile() {
-        return nameFile;
-    }
-
-    public void setnameFile(String name) {
-        this.nameFile = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -112,19 +104,12 @@ public class Document {
         this.user = user;
     }
 
-    public byte[] getData() {
-        return data;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
 
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 }
