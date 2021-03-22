@@ -48,13 +48,6 @@ public class Document {
         this.title = title;
     }
 
-    public String getNameFile() {
-        return nameFile;
-    }
-
-    public void setNameFile(String nameFile) {
-        this.nameFile = nameFile;
-    }
 
     public byte[] getData() {
         return data;

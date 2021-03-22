@@ -124,7 +124,7 @@ public class DocumentController {
         //System.out.println(respByte.getBody().length);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + d.getNameFile() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + d.getnameFile() + "\"")
                 .contentType(MediaType.valueOf(d.getFormat())).body(respByte.getBody());
     }
 }
