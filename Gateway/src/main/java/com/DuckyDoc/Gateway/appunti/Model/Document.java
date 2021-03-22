@@ -48,6 +48,30 @@ public class Document {
         this.title = title;
     }
 
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
     public String getFormat() {
         return format;
     }
@@ -118,6 +142,5 @@ public class Document {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-
     }
 }
