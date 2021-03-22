@@ -47,7 +47,7 @@ export default {
         .get("http://localhost:8085/api/utenti/" + googlelogin.getId())
         .then(function (response) {
           if (response.data != "") {
-            console.log("");
+            console.log("trovato");
           } else {
             axios
               .post("http://localhost:8085/api/utenti/create", {
@@ -86,7 +86,7 @@ export default {
             "name=" + googlelogin.getGivenName() + ";" + expires + ";path=/";
           document.cookie =
             "id=" + response.data.id + ";" + expires + ";path=/";
-          this.goTo("/QA");
+          console.log("cookie pookie");
         })
         .catch((error) => {
           if (error.response) {

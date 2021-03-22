@@ -17,6 +17,7 @@ import java.util.*;
 public class QueryController {
 
     private final RestTemplate restTemplate;
+    String ip = "http://172.28.0.1:";
 
     public QueryController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -26,7 +27,7 @@ public class QueryController {
     public List<Query> getAllQueries() {
         System.out.println("Gateway queries...");
         ResponseEntity<List<Query>> response =  restTemplate
-                .exchange("http://192.168.1.28:8082/queries", HttpMethod.GET, null,
+                .exchange(ip+"8082/queries", HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
@@ -35,7 +36,7 @@ public class QueryController {
     public List<Query> findByUser(@PathVariable long id_user) {
         System.out.println("Gateway user queries...");
         ResponseEntity<List<Query>> response =  restTemplate
-                .exchange("http://192.168.1.28:8082/queries/user/" + id_user, HttpMethod.GET, null,
+                .exchange(ip+"8082/queries/user/" + id_user, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
@@ -44,7 +45,7 @@ public class QueryController {
     public Query findById(@PathVariable long id) {
         System.out.println("Gateway id queries...");
         ResponseEntity<Query> response =  restTemplate
-                .exchange("http://192.168.1.28:8082/queries/" + id, HttpMethod.GET, null,
+                .exchange(ip+"8082/queries/" + id, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
@@ -53,7 +54,7 @@ public class QueryController {
     public List<Query> findByText(@PathVariable String key) {
         System.out.println("Gateway text queries...");
         ResponseEntity<List<Query>> response =  restTemplate
-                .exchange("http://192.168.1.28:8082/queries/find/" + key, HttpMethod.GET, null,
+                .exchange(ip+"8082/queries/find/" + key, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
@@ -70,7 +71,7 @@ public class QueryController {
     public String deleteQuery(@PathVariable("id") long id) {
         System.out.println("Gateway delete query...");
         ResponseEntity<String> response =  restTemplate
-                .exchange("http://192.168.1.28:8082/queries/delete/" + id, HttpMethod.DELETE, null,
+                .exchange(ip+"8082/queries/delete/" + id, HttpMethod.DELETE, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
@@ -80,7 +81,7 @@ public class QueryController {
         System.out.println("Gateway upde query...");
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpEntity<?> test = new HttpEntity<Object>(newText, requestHeaders);
-        ResponseEntity<Query> response = restTemplate.exchange("http://192.168.1.28:8082/queries/setText/" + id, HttpMethod.POST, test,
+        ResponseEntity<Query> response = restTemplate.exchange(ip+"8082/queries/setText/" + id, HttpMethod.POST, test,
                 new ParameterizedTypeReference<>() {});
         return response.getBody();
     }

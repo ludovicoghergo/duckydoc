@@ -64,10 +64,9 @@ public class DocumentController {
     }
 
     @PostMapping(value = "/documents/create")
-    public ResponseEntity<String> upload(@RequestBody Document requestEntity) {
+    public ResponseEntity<Document> upload(@RequestBody Document requestEntity) {
         System.out.println("stiamo creando dr LUDAH");
-        System.out.println(requestEntity.getPrice());
-
+        repository.save(requestEntity);
         // try {
         // fileService.save(file, doc);
         //
