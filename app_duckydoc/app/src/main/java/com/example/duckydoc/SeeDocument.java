@@ -1,5 +1,6 @@
 package com.example.duckydoc;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -97,33 +98,29 @@ public class SeeDocument extends AppCompatActivity {
             Log.i("res", String.valueOf(res.length));
             Log.i("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
             try {
-                File file;
-                if(!Tools.document.getNameFile().contains(".")) {
-                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
-                            + Tools.document.getNameFile() + getFormat(Tools.document.getFormat()));
-                    int cnt = 1;
-                    while (file.exists()) {
-                        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
-                                + Tools.document.getNameFile() + "(" + cnt + ")" + getFormat(Tools.document.getFormat()));
-                        cnt++;
-                    }
-                }
-                else{
-                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
-                            + Tools.document.getNameFile());
-                    int cnt = 1;
-                    while (file.exists()) {
-                        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
-                                + "(" + cnt + ")" + Tools.document.getNameFile());
-                        cnt++;
-                    }
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
+                        + Tools.document.getNameFile());
+                int cnt = 1;
+                while (file.exists()) {
+                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/copia"
+                            + cnt + ")" + Tools.document.getNameFile());
+                    cnt++;
                 }
                 if (!file.createNewFile())
                     return;
                 String path = file.getPath();
-                Log.i("path", path);
+                //Log.i("path", path);
                 FileOutputStream stream = new FileOutputStream(path);
                 stream.write(res);
+
+                //Create the input dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Download completato! \n" + path);
+                // Set up the buttons
+                builder.setNeutralButton("ok", (dialog, which) -> {
+
+                });
+                builder.show();
             } catch (IOException e1) {
                 Log.i("Errore", "errore");
                 e1.printStackTrace();
@@ -132,18 +129,6 @@ public class SeeDocument extends AppCompatActivity {
         else{
             Log.i("resError", "nullo");
         }
-    }
-
-    public String getFormat(String format){
-        switch (format){
-            case "application/pdf":
-                return ".pdf";
-            case "image/png":
-                return ".png";
-            case "image/jpg":
-                return ".jpg";
-        }
-        return "";
     }
 
     @Override

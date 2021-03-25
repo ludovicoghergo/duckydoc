@@ -24,10 +24,11 @@ public class Report {
     @PrimaryKeyJoinColumn(name="userId")
     private Utente user;
 
-    public Report(long documentId, String description, String status) {
+    public Report(long documentId, String description, String status, Utente user) {
         this.documentId = documentId;
         this.description = description;
         this.status = status;
+        this.user = user;
     }
 
     public Report() {

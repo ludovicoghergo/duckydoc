@@ -6,10 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.DuckyDoc.Gateway.appunti.Model.User;
 import com.DuckyDoc.Gateway.appunti.Model.Document;
@@ -28,7 +25,7 @@ import java.util.List;
 public class DocumentController {
 
     private final RestTemplate restTemplate;
-    String ip = "http://172.28.0.1:";
+    String ip = "http://192.168.1.28:";
 
     public DocumentController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

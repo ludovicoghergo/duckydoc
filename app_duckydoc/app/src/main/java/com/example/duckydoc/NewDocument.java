@@ -78,8 +78,15 @@ public class NewDocument extends AppCompatActivity {
             formatType = Files.probeContentType(file.toPath());
         }
 
-        Document document = new Document(titolo, file.getName(), formatType, dataCreazione,
-                 prezzo, descrizione, universita, anno, corso, new User(Tools.account.getIdUser(),
+        String name = file.getName();
+        if(!name.contains(".")){
+            if(name.contains("image")){
+                name += ".png";
+            }
+        }
+
+        Document document = new Document(titolo, name, formatType, dataCreazione,
+                prezzo, descrizione, universita, anno, corso, new User(Tools.account.getIdUser(),
                 Tools.account.getName() + " " + Tools.account.getSurname()));
 
 
