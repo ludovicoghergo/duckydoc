@@ -11,7 +11,7 @@
           class="question"
           @mousedown="goTo('/view_Question/' + question.id)"
         >
-          <v-card-title> {{ question.text }}?</v-card-title>
+          <v-card-title> {{ question.title }}?</v-card-title>
 
           <v-card-subtitle>{{ question.user.username }}</v-card-subtitle>
           <v-card-actions>
@@ -45,7 +45,7 @@ export default {
       var vm = this;
       if (vm.txt_search == "") {
         axios
-          .get("http://localhost:8082/api/queries")
+          .get("http://localhost:8085/api/queries")
           .then(function (response) {
             vm.questions = response.data;
           })
@@ -68,7 +68,7 @@ export default {
           });
       } else {
         axios
-          .get("http://localhost:8082/api/queries/find/" + vm.txt_search)
+          .get("http://localhost:8085/api/queries/find/" + vm.txt_search)
           .then(function (response) {
             vm.questions = response.data;
           })
@@ -95,9 +95,10 @@ export default {
   mounted() {
     var vm = this;
     axios
-      .get("http://localhost:8082/api/queries")
+      .get("http://localhost:8085/api/queries")
       .then(function (response) {
         vm.questions = response.data;
+        console.log(vm.questions);
       })
       .catch((error) => {
         if (error.response) {

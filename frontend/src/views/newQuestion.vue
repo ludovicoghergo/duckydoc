@@ -5,6 +5,11 @@
         Making a new question...
       </v-card-title>
       <v-card-text>
+        <v-text-field
+          label="Question's title"
+          outlined
+          v-model="question_title"
+        ></v-text-field>
         <v-textarea
           v-model="question_txt"
           label="Insert your question"
@@ -40,9 +45,10 @@ export default {
       var name = this.check_cookie_value("name");
       var day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
       axios
-        .post("http://localhost:8082/api/queries/create", {
+        .post("http://localhost:8085/api/queries/create", {
           user: { id, name },
           text: this.question_txt,
+          title: this.question_title,
           date: day,
         })
         .then(function (response) {
@@ -69,6 +75,7 @@ export default {
   data() {
     return {
       question_txt: "",
+      question_title: "",
     };
   },
   mounted() {},

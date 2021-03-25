@@ -61,7 +61,7 @@ export default {
     },
     corrAnswer(idAns) {
       axios
-        .put("http://localhost:8082/api/answers/correct/" + idAns)
+        .put("http://localhost:8085/api/answers/correct/" + idAns)
         .then(function (response) {
           console.log(response);
         })
@@ -87,7 +87,7 @@ export default {
   mounted() {
     var vm = this;
     axios
-      .get("http://localhost:8082/api/queries/" + vm.id + "/answers")
+      .get("http://localhost:8085/api/queries/" + vm.id + "/answers")
       .then(function (response) {
         vm.answers = response.data;
       })

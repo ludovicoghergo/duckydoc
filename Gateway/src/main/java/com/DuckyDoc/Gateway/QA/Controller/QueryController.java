@@ -63,7 +63,7 @@ public class QueryController {
     public Query postQuery(@RequestBody Query query) {
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpEntity<?> test = new HttpEntity<Object>(query, requestHeaders);
-        ResponseEntity<Query> response = restTemplate.exchange("http://192.168.1.28:8082/queries/create", HttpMethod.POST, test, new ParameterizedTypeReference<>() {});
+        ResponseEntity<Query> response = restTemplate.exchange(ip+"8082/queries/create", HttpMethod.POST, test, new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
 

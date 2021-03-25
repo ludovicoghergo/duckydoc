@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class Query {
     private long id;
     private User user;
+    private String title;
     private String text;
     public int date;
     private List<Answer> answers;

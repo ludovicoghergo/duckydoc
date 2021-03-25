@@ -12,6 +12,7 @@ public class Utente {
     private String name;
     private String email;
     private String surname;
+    private int credits;
     private boolean isMod;
     private List<Report> reports;
 }

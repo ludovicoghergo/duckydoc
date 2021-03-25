@@ -29,6 +29,9 @@ public class Query {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "date")
     public int date;
 
@@ -51,6 +54,13 @@ public class Query {
 
     public void setId(long id) {
         this.id = id;
+    }
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public User getUser() {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card elevation="2" outlined color="#faf6d6" class="mt-2 Question">
-      <v-card-title> {{ author }}</v-card-title>
+      <v-card-title> {{ question.title }}?</v-card-title>
 
       <v-card-text>{{ question.text }} </v-card-text>
       <v-card-actions class="card-actions">
@@ -76,7 +76,7 @@ export default {
       this.question.id = parseInt(this.question.id);
       var day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
       axios
-        .post("http://localhost:8082/api/answers/create", {
+        .post("http://localhost:8085/api/answers/create", {
           user: { id, username },
           text: this.answer_txt,
           correct: false,
@@ -126,7 +126,7 @@ export default {
   mounted() {
     var vm = this;
     axios
-      .get("http://localhost:8082/api/queries/" + vm.id_number)
+      .get("http://localhost:8085/api/queries/" + vm.id_number)
       .then(function (response) {
         vm.question = response.data;
         vm.author = vm.question.user.username;
