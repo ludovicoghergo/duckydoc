@@ -75,7 +75,11 @@
           <v-card-text>{{ document.user.username }}</v-card-text>
 
           <v-card-actions class="card-actions">
-            <v-btn @click="downloadIt(document.id, document.nameFile)">
+            <v-btn
+              @click="
+                downloadIt(document.id, document.nameFile, document.price)
+              "
+            >
               Download
             </v-btn>
           </v-card-actions>
@@ -96,28 +100,63 @@ export default {
   name: "Documents",
   components: {},
   methods: {
+    check_cookie_value(name) {
+      var match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+      );
+      if (match) {
+        return match[2];
+      } else {
+        return -1;
+      }
+    },
     convertDate(dateString) {
       dateString = dateString.toString();
       return dateString.replace(/(\d{4})(\d\d)(\d\d)/g, "$2/$3/$1");
     },
-    downloadIt(id, namefile) {
+    downloadIt(id, namefile, cost) {
+      var idUser = this.check_cookie_value("id");
+      var idGoogle = this.check_cookie_value("Token");
+      this.formData = new FormData();
+
       axios
-        .get("http://localhost:8081/documents/" + id, { responseType: "blob" })
+        .get("http://localhost:8085/api/utenti/" + idGoogle)
         .then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          console.log(response);
-          console.log(response.headers["content-type"]);
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", namefile);
-          document.body.appendChild(link);
-          link.click();
+          if (response.data.credits > cost) {
+            this.formData.append("credits", response.data.credits - cost);
+            axios
+              .get("http://localhost:8085/api/documents/" + id, {
+                responseType: "blob",
+              })
+              .then((response) => {
+                const url = window.URL.createObjectURL(
+                  new Blob([response.data])
+                );
+                console.log(response);
+                console.log(response.headers["content-type"]);
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", namefile);
+                document.body.appendChild(link);
+                link.click();
+                axios
+                  .put(
+                    "http://localhost:8085/api/utenti/" +
+                      idUser +
+                      "/updatecredit",
+                    this.formData
+                  )
+                  .then((response) => {
+                    console.log(response.data.credits);
+                  });
+              });
+          }
         });
     },
     searchDocuments() {
       axios
         .get(
-          "http://localhost:8081/documents/search/" +
+          "http://localhost:8085/api/documents/search/" +
             this.searchUni +
             "/" +
             this.searchCourse +

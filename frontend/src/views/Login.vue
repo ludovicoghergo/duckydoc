@@ -47,7 +47,7 @@ export default {
         .get("http://localhost:8085/api/utenti/" + googlelogin.getId())
         .then(function (response) {
           if (response.data != "") {
-            console.log(response);
+            console.log("trovata");
           } else {
             axios
               .post("http://localhost:8085/api/utenti/create", {

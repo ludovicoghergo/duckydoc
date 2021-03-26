@@ -13,7 +13,7 @@ import java.util.List;
 public class UtenteController {
 
     private final RestTemplate restTemplate;
-    String ip = "http://192.168.1.28:";
+    String ip = "http://172.28.0.1:";
 
 
     public UtenteController(RestTemplate restTemplate) {
@@ -43,6 +43,18 @@ public class UtenteController {
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpEntity<?> test = new HttpEntity<Object>(utente, requestHeaders);
         ResponseEntity<Utente> response = restTemplate.exchange(ip+"8083/utenti/create", HttpMethod.POST, test, new ParameterizedTypeReference<>() {});
+        return response.getBody();
+    }
+
+
+    @PutMapping("utenti/{idUtente}/updatecredit")
+    public Utente updateUSer(@PathVariable(value = "idUtente") int idUtente,
+    @RequestParam("credits") int credits) {
+        System.out.println(credits);
+        Long id = new Long(idUtente);
+        HttpHeaders requestHeaders = new HttpHeaders();
+        HttpEntity<?> credits_imp = new HttpEntity<Object>(credits, requestHeaders);
+        ResponseEntity<Utente> response = restTemplate.exchange(ip+"8083/utenti/"+id+"/updatecredit", HttpMethod.PUT, credits_imp, new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
 

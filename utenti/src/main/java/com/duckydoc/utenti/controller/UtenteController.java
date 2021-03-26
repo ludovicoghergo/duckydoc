@@ -52,11 +52,11 @@ public class UtenteController {
         return u;
     }
 
-    @PutMapping("utenti/updatecredit")
-    public ResponseEntity<Utente> updateQuery(@RequestParam("UserId") int userId,
-    @RequestParam("credits") int credits) {
-        System.out.println("Update User with ID = " + userId+ "...");
-        Long id= new Long(userId);
+    @PutMapping("utenti/{idUtente}/updatecredit")
+    public ResponseEntity<Utente> updateQuery(@PathVariable(value = "idUtente") int idUtente,
+    @RequestBody int credits) {
+        System.out.println("Update User with ID = " + idUtente+ "...");
+        Long id= new Long(idUtente);
         Optional<Utente> query = repository.findById(id);
 
         if (query.isPresent()) {
