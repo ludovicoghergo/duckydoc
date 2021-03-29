@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" fixed dark>
+    <v-app-bar dense absolute app color="#1548e094" fixed dark>
       <v-btn text @mousedown="goTo('/')">
         <span class="mr-2">DuckyDoc</span>
       </v-btn>

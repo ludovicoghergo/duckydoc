@@ -39,9 +39,24 @@ public class UtenteController {
 
     @GetMapping("/utenti/{idUtente}")
     public Utente getUtente(@PathVariable String idUtente) {
-        System.out.println("Get utente...");
+        System.out.println("Get utente.sadasda..");
         Utente utente = repository.findByIdGoogle(idUtente);
         return utente;
+    }
+    
+    @GetMapping("/utenti/alt/{idUtente}")
+    public Utente getUtente(@PathVariable Long idUtente) {
+        System.out.println("Get utente..."+idUtente);
+        Optional<Utente> query = repository.findById(idUtente);
+
+        if (query.isPresent()) {
+            System.out.println("trovato ");
+            Utente _query = query.get();
+            return _query;
+        } else {
+            System.out.println("non trovato ");
+            return null;
+        }
     }
 
     @PostMapping("utenti/create")

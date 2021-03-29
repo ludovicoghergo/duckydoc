@@ -1,5 +1,24 @@
 <template>
   <div>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card class="text-center">
+        <v-card-title class="headline"> Oh no! </v-card-title>
+
+        <v-card-text>
+          It looks like you spent all your coins. Please answer some question or
+          upload some document before continue downloading.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="dialog = false">
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-row>
       <v-col cols="3">
         <v-navigation-drawer
@@ -56,9 +75,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-btn @click="searchDocuments()" class="center">
-                Search your params
-              </v-btn>
+              <v-btn @click="searchDocuments()" class="center"> Search </v-btn>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
@@ -67,7 +84,7 @@
         <v-card
           v-for="(document, index) in documents"
           :key="index"
-          color="#f4ecb4"
+          color="#1548e094"
           class="mt-2 document"
         >
           <v-card-title class="headline"> {{ document.title }}</v-card-title>
@@ -99,6 +116,72 @@ import axios from "axios";
 export default {
   name: "Documents",
   components: {},
+  watch: {
+    searchUni: function () {
+      axios
+        .get(
+          "http://localhost:8085/api/documents/search/" +
+            this.searchUni +
+            "/" +
+            this.searchCourse +
+            "/" +
+            this.searchType +
+            "/" +
+            this.searchYear
+        )
+        .then((response) => {
+          this.documents = response.data;
+        });
+    },
+    searchCourse: function () {
+      axios
+        .get(
+          "http://localhost:8085/api/documents/search/" +
+            this.searchUni +
+            "/" +
+            this.searchCourse +
+            "/" +
+            this.searchType +
+            "/" +
+            this.searchYear
+        )
+        .then((response) => {
+          this.documents = response.data;
+        });
+    },
+    searchType: function () {
+      axios
+        .get(
+          "http://localhost:8085/api/documents/search/" +
+            this.searchUni +
+            "/" +
+            this.searchCourse +
+            "/" +
+            this.searchType +
+            "/" +
+            this.searchYear
+        )
+        .then((response) => {
+          this.documents = response.data;
+        });
+    },
+    searchYear: function () {
+      axios
+        .get(
+          "http://localhost:8085/api/documents/search/" +
+            this.searchUni +
+            "/" +
+            this.searchCourse +
+            "/" +
+            this.searchType +
+            "/" +
+            this.searchYear
+        )
+        .then((response) => {
+          this.documents = response.data;
+        });
+    },
+  },
   methods: {
     check_cookie_value(name) {
       var match = document.cookie.match(
@@ -125,15 +208,14 @@ export default {
           if (response.data.credits > cost) {
             this.formData.append("credits", response.data.credits - cost);
             axios
-              .get("http://localhost:8085/api/documents/" + id, {
+              .get("http://localhost:8085/api/documents/download/" + id, {
                 responseType: "blob",
               })
               .then((response) => {
                 const url = window.URL.createObjectURL(
                   new Blob([response.data])
                 );
-                console.log(response);
-                console.log(response.headers["content-type"]);
+                console.log(response.data);
                 const link = document.createElement("a");
                 link.href = url;
                 link.setAttribute("download", namefile);
@@ -150,6 +232,8 @@ export default {
                     console.log(response.data.credits);
                   });
               });
+          } else {
+            this.dialog = true;
           }
         });
     },
@@ -172,6 +256,7 @@ export default {
   },
   data() {
     return {
+      dialog: false,
       searchUni: null,
       searchCourse: null,
       searchType: null,

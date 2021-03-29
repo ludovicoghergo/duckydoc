@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="2" outlined color="#faf6d6" class="mt-2 Question">
+    <v-card elevation="2" outlined color="#1548e094" class="mt-2 Question">
       <v-card-title> {{ question.title }}?</v-card-title>
 
       <v-card-text>{{ question.text }} </v-card-text>

@@ -2,7 +2,7 @@
   <div>
     <v-row v-for="(answer, index) in answers" :key="index">
       <v-col cols="12" class="d-flex justify-center">
-        <v-card color="#f4ecb4" class="mt-2 answer">
+        <v-card v-if="answer.correct" color="#f6febd80" class="mt-2 answer">
           <v-card-title class="headline">
             {{ answer.user.username }}</v-card-title
           >
@@ -15,7 +15,33 @@
                 check_cookie_value('id') == answer.query.user.id &&
                 !answer.correct
               "
-              @click="corrAnswer(answer.id)"
+              @click="corrAnswer(answer.id, answer.user.id)"
+              text
+            >
+              Select as correct</v-btn
+            >
+            <v-btn v-if="answer.correct" disabled text>
+              Marked as correct.</v-btn
+            >
+          </v-card-actions>
+          <v-card-actions class="card-actions2">
+            <v-btn text disabled> {{ convertDate(answer.date) }} </v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card v-else color="#063ee50a" class="mt-2 answer">
+          <v-card-title class="headline">
+            {{ answer.user.username }}</v-card-title
+          >
+
+          <v-card-text>{{ answer.text }}</v-card-text>
+
+          <v-card-actions class="card-actions">
+            <v-btn
+              v-if="
+                check_cookie_value('id') == answer.query.user.id &&
+                !answer.correct
+              "
+              @click="corrAnswer(answer.id, answer.user.id)"
               text
             >
               Select as correct</v-btn
@@ -59,11 +85,27 @@ export default {
         return -1;
       }
     },
-    corrAnswer(idAns) {
+    corrAnswer(idAns, idUser) {
+      var formData = new FormData();
       axios
         .put("http://localhost:8085/api/answers/correct/" + idAns)
-        .then(function (response) {
-          console.log(response);
+        .then(function () {
+          axios
+            .get("http://localhost:8085/api/utenti/alt/" + idUser)
+            .then(function (response) {
+              console.log(response);
+              formData.append("credits", response.data.credits + 20);
+              axios
+                .put(
+                  "http://localhost:8085/api/utenti/" +
+                    idUser +
+                    "/updatecredit",
+                  formData
+                )
+                .then((response) => {
+                  console.log(response.data.credits);
+                });
+            });
         })
         .catch((error) => {
           if (error.response) {

@@ -88,12 +88,12 @@ public class DocumentController {
         return response;
     }
 
-    @GetMapping(value = "/documents/{university}/{course}/{tipologia}/{anno}")
+    @GetMapping(value = "/documents/search/{university}/{course}/{tipologia}/{anno}")
     public List<Document> filterDocument(@PathVariable String university, @PathVariable String course,
                                          @PathVariable String tipologia, @PathVariable String anno) {
         System.out.println("Gateway filtered document...");
         ResponseEntity<List<Document>> response =  restTemplate
-                .exchange(ip+"8081/documents/" + university+"/"+course+"/"+tipologia+"/"+anno, HttpMethod.GET, null,
+                .exchange(ip+"8081/documents/search/" + university+"/"+course+"/"+tipologia+"/"+anno, HttpMethod.GET, null,
                         new ParameterizedTypeReference<>() {});
         return response.getBody();
     }

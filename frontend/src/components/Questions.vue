@@ -6,7 +6,7 @@
     >
       <v-col cols="12" class="d-flex justify-center">
         <v-card
-          color="#385F73"
+          color="#1548e094"
           dark
           class="question"
           @mousedown="goTo('/view_Question/' + question.id)"

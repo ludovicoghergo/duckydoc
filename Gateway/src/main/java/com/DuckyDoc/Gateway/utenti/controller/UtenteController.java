@@ -38,6 +38,16 @@ public class UtenteController {
         return response.getBody();
     }
 
+    @GetMapping("/utenti/alt/{idUtente}")
+    public Utente getUtenteAlt(@PathVariable(value = "idUtente") String idUtente) {
+        System.out.println("Gateway  utenti");
+        Long id = new Long(idUtente);
+        ResponseEntity<Utente> response =  restTemplate
+                .exchange(ip+"8083/utenti/" + id, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<>() {});
+        return response.getBody();
+    }
+
     @PostMapping(value = "utenti/create")
     public Utente postUtente(@RequestBody Utente utente) {
         HttpHeaders requestHeaders = new HttpHeaders();
