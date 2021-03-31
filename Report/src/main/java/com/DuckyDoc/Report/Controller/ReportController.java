@@ -41,7 +41,7 @@ public class ReportController {
     public Report postReport(@RequestBody Report report, @PathVariable int id_user) {
         Utente u = utenteRepository.findById(id_user);
         report.setUser(u);
-        System.out.println(u.getName());
+        //System.out.println(u.getName());
         return repository.save(report);
     }
 

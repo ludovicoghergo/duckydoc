@@ -39,22 +39,22 @@ public class UtenteController {
 
     @GetMapping("/utenti/{idUtente}")
     public Utente getUtente(@PathVariable String idUtente) {
-        System.out.println("Get utente.sadasda..");
+        System.out.println("Get utente by idGoogle..");
         Utente utente = repository.findByIdGoogle(idUtente);
         return utente;
     }
     
     @GetMapping("/utenti/alt/{idUtente}")
-    public Utente getUtente(@PathVariable Long idUtente) {
-        System.out.println("Get utente..."+idUtente);
-        Optional<Utente> query = repository.findById(idUtente);
+    public Utente getUtente(@PathVariable long idUtente) {
+        System.out.println("Get utente by idUser...");
+        Optional<Utente> query = Optional.ofNullable(repository.findById(idUtente));
 
         if (query.isPresent()) {
-            System.out.println("trovato ");
+            //System.out.println("trovato ");
             Utente _query = query.get();
             return _query;
         } else {
-            System.out.println("non trovato ");
+            //System.out.println("non trovato ");
             return null;
         }
     }
@@ -68,11 +68,10 @@ public class UtenteController {
     }
 
     @PutMapping("utenti/{idUtente}/updatecredit")
-    public ResponseEntity<Utente> updateQuery(@PathVariable(value = "idUtente") int idUtente,
-    @RequestBody int credits) {
-        System.out.println("Update User with ID = " + idUtente+ "...");
-        Long id= new Long(idUtente);
-        Optional<Utente> query = repository.findById(id);
+    public ResponseEntity<Utente> updateQuery(@PathVariable(value = "idUtente") int idUtente, @RequestBody int credits) {
+        System.out.println("Update User with ID = " + idUtente+ " and credits = " + credits + "...");
+        long id = idUtente;
+        Optional<Utente> query = Optional.ofNullable(repository.findById(id));
 
         if (query.isPresent()) {
             Utente _query = query.get();
@@ -82,6 +81,4 @@ public class UtenteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
-    
 }

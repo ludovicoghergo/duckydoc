@@ -14,7 +14,7 @@ import java.util.List;
 public class ReportController {
 
     private final RestTemplate restTemplate;
-    String ip="http://172.28.0.1:";
+    String ip="http://192.168.1.28:";
 
     public ReportController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

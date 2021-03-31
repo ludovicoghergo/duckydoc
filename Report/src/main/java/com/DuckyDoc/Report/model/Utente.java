@@ -25,15 +25,21 @@ public class Utente {
     @Column(name = "isMod")
     private boolean isMod;
 
+    @Column(name = "credits")
+    private int credits;
+
     @OneToMany(mappedBy = "user")
     private List<Report> reports;
 
-    public Utente(String idGoogle, String name, String email, String surname, boolean isMod) {
+    public Utente(long id, String idGoogle, String name, String email, String surname, boolean isMod, int credits, List<Report> reports) {
+        this.id = id;
         this.idGoogle = idGoogle;
         this.name = name;
         this.email = email;
         this.surname = surname;
         this.isMod = isMod;
+        this.credits = credits;
+        this.reports = reports;
     }
 
     public Utente() {
@@ -85,5 +91,13 @@ public class Utente {
 
     public void setidGoogle(String name) {
         this.idGoogle = name;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 }
