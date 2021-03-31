@@ -74,9 +74,6 @@
                 ></v-text-field>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item>
-              <v-btn @click="searchDocuments()" class="center"> Search </v-btn>
-            </v-list-item>
           </v-list>
         </v-navigation-drawer>
       </v-col>
@@ -117,7 +114,8 @@ export default {
   name: "Documents",
   components: {},
   watch: {
-    searchUni: function () {
+    searchUni: function (val) {
+      if (val == "") this.searchUni = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -133,7 +131,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchCourse: function () {
+    searchCourse: function (val) {
+      if (val == "") this.searchCourse = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -149,7 +148,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchType: function () {
+    searchType: function (val) {
+      if (val == "") this.searchType = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -165,7 +165,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchYear: function () {
+    searchYear: function (val) {
+      if (val == "") this.searchYear = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
