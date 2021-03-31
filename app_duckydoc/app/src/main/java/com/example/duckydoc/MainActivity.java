@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onStart() {
         super.onStart();
 
-        // [START on_start_sign_in]
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null){
             Account a = Tools.loginUser(account.getId());
@@ -67,22 +64,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .build();
                 GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
                 mGoogleSignInClient.signOut()
-                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                            }
+                        .addOnCompleteListener(this, task -> {
+                            // ...
                         });
             }
             else{
-                //Tools.account = a;
-                Tools.account = Tools.loginUser(account.getId());
-                Log.i("INFO", String.valueOf(Tools.account.getIdUser()));
+                Tools.account = a;
                 startActivity(new Intent(this, Home.class));
                 finish();
             }
         }
-        // [END on_start_sign_in]
     }
 
     public void btLoginGoogle_Click(){
@@ -100,13 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             if(!handleSignInResult(task)){
                 TextView lbl = findViewById(R.id.lblLogin);
                 lbl.setTextColor(Color.RED);
-                lbl.setText("Login non eseguito");
+                lbl.setText("Login failed");
                 return;
             }
 
@@ -121,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(account != null){
                 Account a = Tools.loginUser(account.getId());
                 if(a == null){
-                    a = new Account(account.getId(), account.getEmail(), account.getGivenName(), account.getFamilyName());
+                    a = new Account(account.getId(), account.getEmail(), account.getGivenName(), account.getFamilyName(), 100);
                     Tools.account = a;
                     return Tools.postUser(a);
                 }
@@ -135,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } catch (ApiException e) {
             Log.i("TAG", "signInResult:failed code=" + e.getStatusCode());
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             return false;
         }
     }

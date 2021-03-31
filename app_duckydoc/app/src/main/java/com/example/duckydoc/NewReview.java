@@ -44,27 +44,20 @@ public class NewReview extends AppCompatActivity {
 
         //Create the input dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Sei sicuro di voler continuare?");
+        builder.setTitle("Are you sure to continue?");
         // Set up the buttons
-        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(!Tools.postReview(review)){
-                    error("Impossibile inviare la recensione");
-                    return;
-                }
-                finish();
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            if(!Tools.postReview(review)){
+                error("Unable to send the review");
+                return;
             }
+            finish();
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
+    @SuppressLint("SetTextI18n")
     public boolean datiCorretti(){
         boolean res = true;
 
@@ -74,14 +67,14 @@ public class NewReview extends AppCompatActivity {
             int a = Integer.parseInt((String) sp.getSelectedItem());
             lblVoto.setText("");
         } catch (Exception e) {
-            lblVoto.setText("Inserire il voto!");
+            lblVoto.setText("Insert vote!");
             res = false;
         }
 
         TextView lblTesto = findViewById(R.id.lblTextRevErr);
         String descr = ((EditText)findViewById(R.id.txtTextReview)).getText().toString();
         if(descr.length() <= 0 || descr.length() > 255){
-            lblTesto.setText("Inserire descrizione tra 0 e 255 caratteri");
+            lblTesto.setText("Insert description from 0 to 255 characters");
             res = false;
         }
         else{

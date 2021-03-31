@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.duckydoc.DAO.Account;
 import com.example.duckydoc.DAO.Document;
 import com.example.duckydoc.DAO.Tools;
 import com.example.duckydoc.DAO.User;
@@ -27,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 public class NewDocument extends AppCompatActivity {
@@ -42,10 +42,10 @@ public class NewDocument extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_document);
-        setTitle("DuckyDoc - Nuovo documento");
+        setTitle("DuckyDoc - New document");
 
         txtScegli = findViewById(R.id.txtScegliFile);
-        txtScegli.setText("Nessun file selezionato");
+        txtScegli.setText("No file selected");
 
         i = new Intent(this, CatalogoDocument.class);
     }
@@ -92,46 +92,48 @@ public class NewDocument extends AppCompatActivity {
 
         //Create the input dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Sei sicuro di voler continuare?");
+        builder.setTitle("Are you sure to continue?");
         // Set up the buttons
-        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                byte[] b = new byte[0];
-                try {
-                    b = getBytes();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                document.setData(b);
-                document.setSize((long) b.length);
-
-                if(!Tools.postDocument(document)){
-                    error("Impossibile inviare il documento");
-                    return;
-                }
-                Tools.lstDocuments.add(document);
-                startActivity(i);
-                finish();
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            byte[] b = new byte[0];
+            try {
+                b = getBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+
+            document.setData(b);
+            document.setSize((long) b.length);
+
+            if(!Tools.postDocument(document)){
+                error("Unable to send the document");
+                return;
             }
+
+            //Add credits
+            int c = Tools.account.getCredits() + document.getPrice();
+            Tools.account.setCredits(c);
+            boolean tmp;
+            do {
+                tmp = Tools.putCredits(Tools.account.getIdUser(), c);
+            }while(!tmp);
+
+            Tools.lstDocuments.add(document);
+            startActivity(i);
+            finish();
         });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
+    @SuppressLint("SetTextI18n")
     private boolean datiCorretti(){
         boolean correct = true;
 
         TextView lblTitolo = findViewById(R.id.lblTitoloErr);
         String titolo = ((EditText)findViewById(R.id.txtTitoloDocumento)).getText().toString();
         if(titolo.equals("") || titolo.length() == 0){
-            lblTitolo.setText("Inserire il titolo!");
+            lblTitolo.setText("Insert the title!");
             correct = false;
         }
         else{
@@ -141,7 +143,7 @@ public class NewDocument extends AppCompatActivity {
         TextView lblUniversita = findViewById(R.id.lblUniversitaErr);
         String universita = ((EditText)findViewById(R.id.txtUniversitaDocumento)).getText().toString();
         if(universita.equals("") || universita.length() == 0){
-            lblUniversita.setText("Inserire l'università di appartenenza!");
+            lblUniversita.setText("Insert the university!");
             correct = false;
         }
         else{
@@ -151,7 +153,7 @@ public class NewDocument extends AppCompatActivity {
         TextView lblCorso = findViewById(R.id.lblCorsoErr);
         String corso = ((EditText)findViewById(R.id.txtCorsoDocumento)).getText().toString();
         if(corso.equals("") || corso.length() == 0){
-            lblCorso.setText("Inserire il corso di appartenenza!");
+            lblCorso.setText("Insert the course!");
             correct = false;
         }
         else{
@@ -164,7 +166,7 @@ public class NewDocument extends AppCompatActivity {
             int a = Integer.parseInt((String) sp.getSelectedItem());
             lblAnno.setText("");
         } catch (Exception e) {
-            lblAnno.setText("Inserire l'anno di frequenza!");
+            lblAnno.setText("Insert the attendance year!");
             correct = false;
         }
 
@@ -178,13 +180,13 @@ public class NewDocument extends AppCompatActivity {
             lblPrezzo.setText("");
         } catch (Exception e) {
             correct = false;
-            lblPrezzo.setText("Inserire prezzo > 0!");
+            lblPrezzo.setText("Insert price > 0!");
         }
 
         TextView lblDescrizione = findViewById(R.id.lblDescrizioneErr);
         String descr = ((EditText)findViewById(R.id.txtDescrizioneDocumento)).getText().toString();
         if(descr.length() <= 0 || descr.length() > 255){
-            lblDescrizione.setText("Inserire descrizione tra 0 e 255 caratteri");
+            lblDescrizione.setText("Insert description from 0 to 255 characters");
             correct = false;
         }
         else{
@@ -224,7 +226,7 @@ public class NewDocument extends AppCompatActivity {
     }
 
     public byte[] getBytes() throws IOException {
-        InputStream iStream = null;
+        InputStream iStream;
         try {
             iStream = getContentResolver().openInputStream(selectedFile);
         } catch (IOException e) {
@@ -236,7 +238,7 @@ public class NewDocument extends AppCompatActivity {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
+        int len;
         while ((len = iStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }

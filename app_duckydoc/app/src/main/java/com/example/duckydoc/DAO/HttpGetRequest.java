@@ -1,7 +1,6 @@
 package com.example.duckydoc.DAO;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.webkit.CookieManager;
 
 import java.io.BufferedReader;

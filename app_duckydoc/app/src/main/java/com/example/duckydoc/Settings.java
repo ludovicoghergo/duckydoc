@@ -1,12 +1,14 @@
 package com.example.duckydoc;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duckydoc.DAO.Tools;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -17,11 +19,15 @@ import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        setTitle("DuckyDoc - Impostazioni");
+        setTitle("DuckyDoc - Settings");
+
+        TextView lblCoins = findViewById(R.id.lblCoins);
+        lblCoins.setText("Current credits: " + Tools.account.getCredits());
     }
 
     @Override
@@ -39,13 +45,10 @@ public class Settings extends AppCompatActivity {
                 .build();
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                        startActivity(i);
-                        finish();
-                    }
+                .addOnCompleteListener(this, task -> {
+                    // ...
+                    startActivity(i);
+                    finish();
                 });
     }
 }

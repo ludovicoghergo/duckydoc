@@ -59,8 +59,8 @@ public class lstReviewAdapter extends ArrayAdapter<Review> {
         String formatedDate = newFormat.format(date);
 
         lblUser.setText(review.getUser().getUsername());
-        lblData.setText("Data: " + formatedDate);
-        lblVote.setText("Voto: " + String.valueOf(review.getVote()));
+        lblData.setText("Date: " + formatedDate);
+        lblVote.setText("Vote: " + review.getVote());
         lblText.setText(review.getText());
 
         return view;

@@ -4,10 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,12 +35,12 @@ public class NewQA extends AppCompatActivity {
 
         TextView lblTitolo = findViewById(R.id.lblNewqa);
         if(query){
-            lblTitolo.setText("Nuova domanda");
-            m = "Confermi l'invio della domanda?";
+            lblTitolo.setText("New question");
+            m = "Are you sure to send the question?";
         }
         else{
-            lblTitolo.setText("Nuova risposta");
-            m = "Confermi l'invio della risposta?";
+            lblTitolo.setText("New answer");
+            m = "Are you sure to send the answer?";
         }
     }
 
@@ -50,7 +50,7 @@ public class NewQA extends AppCompatActivity {
         String testo = ((EditText)findViewById(R.id.txtTesto)).getText().toString();
         //Testo non vuoto
         if(testo.length() < 1){
-            error("Scrivere la risposta!");
+            error("The field must not be empty!");
             return;
         }
 
@@ -63,19 +63,26 @@ public class NewQA extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(m);
         // Set up the buttons
-        builder.setPositiveButton("Si", (dialog, which) -> {
+        builder.setPositiveButton("Yes", (dialog, which) -> {
             if(query){
                 Query query = new Query(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), testo, dataCreazione);
                 if(!Tools.postQuery(query)){
-                    error("Impossibile inviare la richiesta");
+                    error("Unable to send the question");
                     return;
                 }
+                //Remove credits
+                int c = Tools.account.getCredits() - 20;
+                Tools.account.setCredits(c);
+                boolean tmp;
+                do {
+                    tmp = Tools.putCredits(Tools.account.getIdUser(), c);
+                }while(!tmp);
                 onBackPressed();
             }
             else{
                 Answer answer = new Answer(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), testo, dataCreazione, false, Tools.query);
                 if(!Tools.postAnswer(answer)){
-                    error("Impossibile inviare la risposta");
+                    error("Unable to send the answer");
                     return;
                 }
                 onBackPressed();

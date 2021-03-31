@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.example.duckydoc.DAO.Document;
 import com.example.duckydoc.DAO.Review;
 import com.example.duckydoc.DAO.Tools;
 
@@ -21,7 +20,7 @@ public class SeeReviews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_reviews);
-        setTitle("DuckyDoc - Recensioni");
+        setTitle("DuckyDoc - Reviews");
 
         lstReview = Tools.getDocumentReviews();
 

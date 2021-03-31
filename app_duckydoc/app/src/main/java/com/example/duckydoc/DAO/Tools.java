@@ -7,16 +7,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +64,39 @@ public class Tools {
         return account;
     }
 
+    public static Account getUser(long id){
+        String parameters = requestURL + "utenti/alt/" + id;
+        String result;
+        Account account = null;
+        HttpGetRequest getRequest = new HttpGetRequest();
+        try {
+            result = getRequest.execute(parameters).get();
+
+            //FARE I CONTROLLI DEI RISULTATI DI RITORNO!!
+            switch (result) {
+                case genericError:
+                    //problema connessione db
+                    sqlErrorContainer = genericError;
+                    break;
+                case "EMAILERR":
+                    sqlErrorContainer = "Email inserita inesistente";
+                    break;
+                case "FAILURE":
+                    sqlErrorContainer = "Password errata";
+                    break;
+                default:
+                    Gson gson = new Gson();
+                    account = gson.fromJson(result, Account.class);
+                    //account = new Account(id, email, "aletemp", password);
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return account;
+    }
+
     public static boolean postUser(Account u){
         String parameters = requestURL + "utenti/create";
         String result;
@@ -90,6 +113,35 @@ public class Tools {
                 Account tmp = gson.fromJson(result, Account.class);
                 if (tmp != null) {
                     account.setIdUser(tmp.getIdUser());
+                    return true;
+                }
+                else{
+                    sqlErrorContainer = genericError;
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sqlErrorContainer = genericError;
+        }
+        return false;
+    }
+
+    public static boolean putCredits(long idUser, int credits){
+        String parameters = requestURL + "utenti/" + idUser +"/updatecredit";
+        String result;
+
+        HttpPutRequest putRequest = new HttpPutRequest(credits);
+        try {
+            result = putRequest.execute(parameters).get();
+            if(result.equals(genericError)){
+                //problema connessione db
+                sqlErrorContainer = genericError;
+            }
+            else {
+                Gson gson = new Gson();
+                Account tmp = gson.fromJson(result, Account.class);
+                if (tmp != null) {
                     return true;
                 }
                 else{
@@ -412,20 +464,13 @@ public class Tools {
         HttpGetDocument getRequest = new HttpGetDocument();
         try {
             result = getRequest.execute(parameters).get();
-            if(result.equals(genericError)){
-                //problema connessione db
-                sqlErrorContainer = genericError;
+            //Log.i("download", String.valueOf(result.length));
+            if (result != null) {
+                return result;
             }
-            else {
-                Gson gson = new GsonBuilder().setLenient().create();
-                Log.i("download", String.valueOf(result.length));
-                if (result != null) {
-                    return result;
-                }
-                else{
-                    sqlErrorContainer = genericError;
-                    return null;
-                }
+            else{
+                sqlErrorContainer = genericError;
+                return null;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -444,25 +489,21 @@ public class Tools {
             if(result.equals(genericError)){
                 //problema connessione db
                 sqlErrorContainer = genericError;
-                Log.i("doc", "generic error");
             }
             else {
                 Gson gson = new Gson();
                 boolean tmp = gson.fromJson(result, boolean.class);
                 if (tmp) {
-                    Log.i("doc", "ok");
                     return true;
                 }
                 else{
                     sqlErrorContainer = genericError;
-                    Log.i("doc", "altro errore");
                     return false;
                 }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             sqlErrorContainer = genericError;
-            Log.i("doc", "catch error");
         }
         return false;
     }

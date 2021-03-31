@@ -1,21 +1,16 @@
 package com.example.duckydoc;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.duckydoc.DAO.Document;
-import com.example.duckydoc.DAO.Query;
 import com.example.duckydoc.DAO.Tools;
 
 import java.util.ArrayList;
@@ -30,7 +25,7 @@ public class CatalogoDocument extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogo_document);
-        setTitle("DuckyDoc - Documenti");
+        setTitle("DuckyDoc - Documents");
 
         Intent documentActivity = new Intent(this, SeeDocument.class);
 

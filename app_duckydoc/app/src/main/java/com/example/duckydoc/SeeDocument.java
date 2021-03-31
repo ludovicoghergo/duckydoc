@@ -14,10 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.duckydoc.DAO.Account;
 import com.example.duckydoc.DAO.Tools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -53,10 +53,10 @@ public class SeeDocument extends AppCompatActivity {
 
         lblTitolo.setText(Tools.document.getTitle());
         lblUniversita.setText(Tools.document.getUniversity());
-        lblCorso.setText("Corso: " + Tools.document.getCourse());
-        lblAnno.setText("Anno: " + Tools.document.getYear());
-        lblDataCreazione.setText("Data di caricamento: " + formatedDate);
-        lblUtente.setText("Utente: " + Tools.document.getUser().getUsername());
+        lblCorso.setText("Course: " + Tools.document.getCourse());
+        lblAnno.setText("Year: " + Tools.document.getYear());
+        lblDataCreazione.setText("Upload date: " + formatedDate);
+        lblUtente.setText("User: " + Tools.document.getUser().getUsername());
         lblDescrizione.setText(Tools.document.getDescription());
     }
 
@@ -90,19 +90,19 @@ public class SeeDocument extends AppCompatActivity {
         return true;
     }
 
-    public void btDownload_Click(View view) throws InterruptedException, ExecutionException, IOException {
+    public void btDownload_Click(View view) {
         //DOWNLOAD TOOL
         byte[] res = Tools.downloadDocument(Tools.document.getId());
 
         if(res != null){
-            Log.i("res", String.valueOf(res.length));
-            Log.i("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
+            //Log.i("res", String.valueOf(res.length));
+            //Log.i("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
             try {
                 File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/"
                         + Tools.document.getNameFile());
                 int cnt = 1;
                 while (file.exists()) {
-                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/copia"
+                    file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/copy"
                             + cnt + ")" + Tools.document.getNameFile());
                     cnt++;
                 }
@@ -115,14 +115,20 @@ public class SeeDocument extends AppCompatActivity {
 
                 //Create the input dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Download completato! \n" + path);
+                builder.setTitle("Download completed!");
                 // Set up the buttons
                 builder.setNeutralButton("ok", (dialog, which) -> {
-
+                    //Remove credits
+                    int c = Tools.account.getCredits() - Tools.document.getPrice();
+                    Tools.account.setCredits(c);
+                    boolean b;
+                    do {
+                        b = Tools.putCredits(Tools.account.getIdUser(), c);
+                    }while(!b);
                 });
                 builder.show();
             } catch (IOException e1) {
-                Log.i("Errore", "errore");
+                //Log.i("Error", "error");
                 e1.printStackTrace();
             }
         }

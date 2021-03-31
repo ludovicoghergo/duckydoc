@@ -14,7 +14,7 @@ public class DocumentFilter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_document_filter);
-        setTitle("Filtri");
+        setTitle("Filters");
     }
 
     public void btMostra_Click(View view){

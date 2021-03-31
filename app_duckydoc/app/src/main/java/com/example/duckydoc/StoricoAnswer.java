@@ -23,7 +23,7 @@ public class StoricoAnswer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storico_answer);
-        setTitle("DuckyDoc - Storico risposte");
+        setTitle("DuckyDoc - Answer history");
 
         Intent queryActivity = new Intent(this, SeeQuery.class);
 
@@ -31,12 +31,9 @@ public class StoricoAnswer extends AppCompatActivity {
         ListView listViewStorico = findViewById(R.id.lstStoricoAnswer);
         lstAnswerAdapter = new LstAnswerAdapter(this, R.layout.lst_answer_adapter, lstAnswer);
         listViewStorico.setAdapter(lstAnswerAdapter);
-        listViewStorico.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                queryActivity.putExtra("QUERY_MESSAGE", lstAnswer.get(position).getQuery().getId());
-                startActivity(queryActivity);
-            }
+        listViewStorico.setOnItemClickListener((parent, view, position, id) -> {
+            queryActivity.putExtra("QUERY_MESSAGE", lstAnswer.get(position).getQuery().getId());
+            startActivity(queryActivity);
         });
     }
 

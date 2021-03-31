@@ -15,10 +15,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.duckydoc.DAO.Account;
 import com.example.duckydoc.DAO.Answer;
-import com.example.duckydoc.DAO.Query;
 import com.example.duckydoc.DAO.Tools;
-import com.example.duckydoc.DAO.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,22 +70,33 @@ public class LstAnswerQueryAdapter extends ArrayAdapter<Answer> {
             btCorretta.setVisibility(View.GONE);
         }
 
-        btCorretta.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Create the input dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Sei sicuro che la risposta sia corretta?");
-                // Set up the buttons
-                builder.setPositiveButton("Si", (dialog, which) -> {
-                    if(Tools.putCorrect(answer.getId())){
-                        answer.setCorrect(true);
-                        chkCorrect.setChecked(true);
-                        btCorretta.setVisibility(View.GONE);
-                    }
-                });
-                builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-                builder.show();
-            }
+        btCorretta.setOnClickListener(v -> {
+            //Create the input dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("Are you sure that the Answer is correct?");
+            // Set up the buttons
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                if(Tools.putCorrect(answer.getId())){
+                    answer.setCorrect(true);
+                    chkCorrect.setChecked(true);
+                    btCorretta.setVisibility(View.GONE);
+
+                    //Add credits
+                    Account a;
+                    Log.i("info", String.valueOf(answer.getUser().getId()));
+                    do {
+                        a = Tools.getUser(answer.getUser().getId());
+                        //Log.i("info", a.toString());
+                    }while(a == null);
+                    int c = a.getCredits() + 20;
+                    boolean b;
+                    do {
+                        b = Tools.putCredits(a.getIdUser(), c);
+                    }while(!b);
+                }
+            });
+            builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
+            builder.show();
         });
 
         return view;

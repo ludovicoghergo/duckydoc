@@ -5,12 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.duckydoc.DAO.Document;
@@ -28,7 +25,7 @@ public class StoricoDocumenti extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storico_documenti);
-        setTitle("DuckyDoc - Storico documenti");
+        setTitle("DuckyDoc - Documents history");
 
         Intent documentActivity = new Intent(this, SeeDocument.class);
 

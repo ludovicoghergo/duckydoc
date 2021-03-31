@@ -1,12 +1,9 @@
 package com.example.duckydoc.DAO;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,7 +11,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 public class HttpPostRequest extends AsyncTask<String, Void, String> {
 

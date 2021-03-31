@@ -45,7 +45,7 @@ public class LstDocumentiAdapter extends ArrayAdapter<Document> {
         lblNome.setText(d.getTitle());
         lblUniversita.setText(d.getUniversity());
         lblCorso.setText(d.getCourse());
-        lblAnno.setText("Anno: " + d.getYear());
+        lblAnno.setText("Year: " + d.getYear());
 
         return view;
     }
