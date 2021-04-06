@@ -1,5 +1,6 @@
 package com.DuckyDoc.Gateway.utenti.controller;
 
+import com.DuckyDoc.Gateway.utenti.model.Intern;
 import com.DuckyDoc.Gateway.utenti.model.Utente;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -13,7 +14,7 @@ import java.util.List;
 public class UtenteController {
 
     private final RestTemplate restTemplate;
-    String ip = "http://192.168.1.28:";
+    String ip = "http://192.168.0.192:";
 
 
     public UtenteController(RestTemplate restTemplate) {
@@ -58,11 +59,12 @@ public class UtenteController {
 
 
     @PutMapping("utenti/{idUtente}/updatecredit")
-    public Utente updateUSer(@PathVariable(value = "idUtente") int idUtente, @RequestBody int credits) {
+    public Utente updateUSer(@PathVariable(value = "idUtente") int idUtente, @RequestBody Intern credits) {
         System.out.println("Gateway update credits");
         long id = idUtente;
+        int credits_int = credits.getCredits();
         HttpHeaders requestHeaders = new HttpHeaders();
-        HttpEntity<?> credits_imp = new HttpEntity<Object>(credits, requestHeaders);
+        HttpEntity<?> credits_imp = new HttpEntity<Object>(credits_int, requestHeaders);
         ResponseEntity<Utente> response = restTemplate.exchange(ip+"8083/utenti/"+id+"/updatecredit", HttpMethod.PUT, credits_imp, new ParameterizedTypeReference<>() {});
         return response.getBody();
     }

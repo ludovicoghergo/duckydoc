@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dbAppunti:
+    container_name: dbAppunti
     image: postgres
     ports:
       - "5432"
@@ -21,6 +22,8 @@ services:
       - "8081:8080"
     depends_on:
       - dbAppunti
+
+
       
   pgadmin:
     image: dpage/pgadmin4
@@ -28,12 +31,15 @@ services:
        PGADMIN_DEFAULT_EMAIL: mattia98779@gmail.com
        PGADMIN_DEFAULT_PASSWORD: admin
        PGADMIN_LISTEN_PORT: 51
+    
+    restart: always
     ports:
        - "5051:51"
     volumes:
        - pgadmin-data:/var/lib/pgadmin
     links:
       - "dbAppunti:pgsql-server"
+
 
 volumes:
   db-data:
