@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog v-model="dialog_coin" max-width="290">
       <v-card class="text-center">
         <v-card-title class="headline"> Oh no! </v-card-title>
 
@@ -12,14 +12,66 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" text @click="dialog = false">
+          <v-btn color="green darken-1" text @click="dialog_coin = false">
             Ok
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-card elevation="2" outlined color="#1548e094" class="mt-2 Question">
-      <v-card-title> {{ document.title }}</v-card-title>
+      <v-card-title>
+        {{ document.title }}
+        <v-dialog v-model="dialog_rep" persistent max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              color="primary"
+              class="report"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon> mdi-alert-octagram </v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline" v-if="document.user != undefined"
+                >Report {{ document.user.username }}'s doc</span
+              >
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <p>Please tell us what's wrong.</p>
+                <v-row>
+                  <v-col>
+                    <v-textarea
+                      v-model="report_txt"
+                      label="Write here ..."
+                      outlined
+                      required
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*Thank you for your contribute.</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog_rep = false">
+                Close
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="(dialog_rep = false), sendReport()"
+              >
+                Send
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card-title>
 
       <v-card-text>
         <h3>
@@ -166,6 +218,35 @@ export default {
         return -1;
       }
     },
+    sendReport() {
+      var vm = this;
+      var idUser = this.check_cookie_value("id");
+      axios
+        .get("http://localhost:8085/api/utenti/alt/" + idUser)
+        .then(function (response) {
+          console.log(response.data);
+          axios
+            .post("http://localhost:8085/api/reports/" + idUser + "/create", {
+              documentId: document.id,
+              description: vm.report_txt,
+              status: "pending",
+              user: {
+                credits: response.data.credits,
+                email: response.data.email,
+                id: response.data.id,
+                idGoogle: response.data.idGoogle,
+                isMod: response.data.mod,
+                name: response.data.name,
+                reports: response.data.reports,
+                surname: response.data.surname,
+              },
+            })
+            .then((response) => {
+              console.log(response);
+            });
+        });
+    },
+
     convertDate(dateString) {
       dateString = dateString.toString();
       return dateString.replace(/(\d{4})(\d\d)(\d\d)/g, "$2/$3/$1");
@@ -174,7 +255,7 @@ export default {
       var idUser = this.check_cookie_value("id");
       var idGoogle = this.check_cookie_value("Token");
       this.formData = new FormData();
-
+      console.log("ciao");
       axios
         .get("http://localhost:8085/api/utenti/" + idGoogle)
         .then((response) => {
@@ -208,7 +289,7 @@ export default {
                   });
               });
           } else {
-            this.dialog = true;
+            this.dialog_coin = true;
           }
         });
     },
@@ -220,6 +301,9 @@ export default {
       author: "",
       dialog: false,
       review_txt: "",
+      report_txt: "",
+      dialog_rep: false,
+      dialog_coin: false,
       rating: 0,
     };
   },
@@ -276,5 +360,9 @@ export default {
 .rate_rev {
   left: auto;
   right: auto;
+}
+.report {
+  position: absolute;
+  right: 5%;
 }
 </style>
