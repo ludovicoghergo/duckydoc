@@ -86,21 +86,20 @@ export default {
       }
     },
     corrAnswer(idAns, idUser) {
-      var formData = new FormData();
+
       axios
         .put("http://localhost:8085/api/answers/correct/" + idAns)
         .then(function () {
           axios
             .get("http://localhost:8085/api/utenti/alt/" + idUser)
             .then(function (response) {
-              console.log(response);
-              formData.append("credits", response.data.credits + 20);
+              var money = response.data.credits +25;
               axios
                 .put(
                   "http://localhost:8085/api/utenti/" +
                     idUser +
                     "/updatecredit",
-                  formData
+                  { credits: money }
                 )
                 .then((response) => {
                   console.log(response.data.credits);
