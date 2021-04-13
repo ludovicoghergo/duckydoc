@@ -74,9 +74,6 @@
                 ></v-text-field>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item>
-              <v-btn @click="searchDocuments()" class="center"> Search </v-btn>
-            </v-list-item>
           </v-list>
         </v-navigation-drawer>
       </v-col>
@@ -86,6 +83,7 @@
           :key="index"
           color="#1548e094"
           class="mt-2 document"
+          @mousedown="goTo('/view_Document/' + document.id)"
         >
           <v-card-title class="headline"> {{ document.title }}</v-card-title>
 
@@ -97,7 +95,7 @@
                 downloadIt(document.id, document.nameFile, document.price)
               "
             >
-              Download
+              {{ document.price }} $
             </v-btn>
           </v-card-actions>
           <v-card-actions class="card-actions2">
@@ -117,7 +115,8 @@ export default {
   name: "Documents",
   components: {},
   watch: {
-    searchUni: function () {
+    searchUni: function (val) {
+      if (val == "") this.searchUni = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -133,7 +132,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchCourse: function () {
+    searchCourse: function (val) {
+      if (val == "") this.searchCourse = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -149,7 +149,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchType: function () {
+    searchType: function (val) {
+      if (val == "") this.searchType = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -165,7 +166,8 @@ export default {
           this.documents = response.data;
         });
     },
-    searchYear: function () {
+    searchYear: function (val) {
+      if (val == "") this.searchYear = null;
       axios
         .get(
           "http://localhost:8085/api/documents/search/" +
@@ -183,6 +185,9 @@ export default {
     },
   },
   methods: {
+    goTo(address) {
+      this.$router.push(address);
+    },
     check_cookie_value(name) {
       var match = document.cookie.match(
         new RegExp("(^| )" + name + "=([^;]+)")
@@ -226,7 +231,7 @@ export default {
                     "http://localhost:8085/api/utenti/" +
                       idUser +
                       "/updatecredit",
-                    this.formData
+                    { credits: response.data.credits - cost }
                   )
                   .then((response) => {
                     console.log(response.data.credits);

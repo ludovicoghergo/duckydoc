@@ -17,7 +17,7 @@ import java.util.*;
 public class QueryController {
 
     private final RestTemplate restTemplate;
-    String ip = "http://192.168.1.28:";
+    String ip = "http://192.168.0.192:";
 
     public QueryController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
