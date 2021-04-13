@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.duckydoc.DAO.Account;
@@ -58,6 +59,11 @@ public class SeeDocument extends AppCompatActivity {
         lblDataCreazione.setText("Upload date: " + formatedDate);
         lblUtente.setText("User: " + Tools.document.getUser().getUsername());
         lblDescrizione.setText(Tools.document.getDescription());
+
+        if(Tools.document.getUser().getId() == Tools.account.getIdUser()){
+            Button b = findViewById(R.id.btDownload);
+            b.setEnabled(false);
+        }
     }
 
     @Override

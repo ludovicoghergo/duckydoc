@@ -130,8 +130,9 @@ public class Tools {
     public static boolean putCredits(long idUser, int credits){
         String parameters = requestURL + "utenti/" + idUser +"/updatecredit";
         String result;
+        Intern i = new Intern(credits);
 
-        HttpPutRequest putRequest = new HttpPutRequest(credits);
+        HttpPutRequest putRequest = new HttpPutRequest(i);
         try {
             result = putRequest.execute(parameters).get();
             if(result.equals(genericError)){

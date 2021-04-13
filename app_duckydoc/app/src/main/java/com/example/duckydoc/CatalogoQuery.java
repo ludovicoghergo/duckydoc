@@ -34,7 +34,7 @@ public class CatalogoQuery extends AppCompatActivity {
         lstQuery = Tools.getQueries();
         lstString = new ArrayList<>();
         for(Query q : lstQuery){
-            lstString.add(q.getText());
+            lstString.add(q.getTitle());
         }
 
         ListView listViewCatalogo = findViewById(R.id.lstCatalogoQuery);
@@ -66,7 +66,7 @@ public class CatalogoQuery extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 lstString.clear();
                 for(Query q : lstQuery){
-                    lstString.add(q.getText());
+                    lstString.add(q.getTitle());
                 }
 
                 for(int i = 0; i < lstString.size(); i++){

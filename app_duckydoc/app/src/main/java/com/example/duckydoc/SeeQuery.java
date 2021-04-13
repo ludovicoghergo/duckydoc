@@ -51,10 +51,12 @@ public class SeeQuery extends AppCompatActivity {
 
         TextView lblUser = findViewById(R.id.lblUserQuery);
         TextView lblText = findViewById(R.id.lblUserText);
+        TextView lblTitle = findViewById(R.id.lblUserTitle);
         TextView lblData = findViewById(R.id.lblDataQuery);
 
         lblUser.setText(query.getUser().getUsername());
         lblText.setText(query.getText());
+        lblTitle.setText(query.getTitle());
         lblData.setText(formatedDate);
 
         ListView listViewAnswer = findViewById(R.id.lstAnswers);

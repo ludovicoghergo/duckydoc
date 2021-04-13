@@ -36,10 +36,12 @@ public class NewQA extends AppCompatActivity {
         TextView lblTitolo = findViewById(R.id.lblNewqa);
         if(query){
             lblTitolo.setText("New question");
+            findViewById(R.id.txtTitle).setVisibility(View.VISIBLE);
             m = "Are you sure to send the question?";
         }
         else{
             lblTitolo.setText("New answer");
+            findViewById(R.id.txtTitle).setVisibility(View.INVISIBLE);
             m = "Are you sure to send the answer?";
         }
     }
@@ -50,7 +52,7 @@ public class NewQA extends AppCompatActivity {
         String testo = ((EditText)findViewById(R.id.txtTesto)).getText().toString();
         //Testo non vuoto
         if(testo.length() < 1){
-            error("The field must not be empty!");
+            error("Text field must not be empty!");
             return;
         }
 
@@ -65,7 +67,14 @@ public class NewQA extends AppCompatActivity {
         // Set up the buttons
         builder.setPositiveButton("Yes", (dialog, which) -> {
             if(query){
-                Query query = new Query(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), testo, dataCreazione);
+                String titolo = ((EditText)findViewById(R.id.txtTitle)).getText().toString();
+                //Testo non vuoto
+                if(titolo.length() < 1){
+                    error("Title field must not be empty!");
+                    return;
+                }
+
+                Query query = new Query(new User(Tools.account.getIdUser(), Tools.account.getName() + " " + Tools.account.getSurname()), titolo, testo, dataCreazione);
                 if(!Tools.postQuery(query)){
                     error("Unable to send the question");
                     return;

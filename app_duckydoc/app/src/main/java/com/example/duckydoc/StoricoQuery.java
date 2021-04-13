@@ -33,7 +33,7 @@ public class StoricoQuery extends AppCompatActivity {
         lstQuery = Tools.getUserQueries();
         lstString = new ArrayList<>();
         for(Query q : lstQuery){
-            lstString.add(q.getText());
+            lstString.add(q.getTitle());
         }
 
         ListView listViewStorico = findViewById(R.id.lstStoricoQuery);
@@ -65,7 +65,7 @@ public class StoricoQuery extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 lstString.clear();
                 for(Query q : lstQuery){
-                    lstString.add(q.getText());
+                    lstString.add(q.getTitle());
                 }
 
                 for(int i = 0; i < lstString.size(); i++){
