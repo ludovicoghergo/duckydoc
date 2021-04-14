@@ -2,7 +2,7 @@
   <div>
     <v-row v-for="(answer, index) in answers" :key="index">
       <v-col cols="12" class="d-flex justify-center">
-        <v-card v-if="answer.correct" color="#f6febd80" class="mt-2 answer">
+        <v-card dark v-if="answer.correct" color="#f6febd80" class="mt-2 answer">
           <v-card-title class="headline">
             {{ answer.user.username }}</v-card-title
           >

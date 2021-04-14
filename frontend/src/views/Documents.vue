@@ -82,6 +82,7 @@
           v-for="(document, index) in documents"
           :key="index"
           color="#1548e094"
+          dark
           class="mt-2 document"
           @mousedown="goTo('/view_Document/' + document.id)"
         >

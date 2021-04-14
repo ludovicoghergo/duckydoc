@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog_coin" max-width="290">
-      <v-card class="text-center">
+      <v-card  class="text-center">
         <v-card-title class="headline"> Oh no! </v-card-title>
 
         <v-card-text>
@@ -18,7 +18,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-card elevation="2" outlined color="#1548e094" class="mt-2 Question">
+    <v-card elevation="2"  dark outlined color="#1548e094" class="mt-2 Question">
       <v-card-title>
         {{ document.title }}
         <v-dialog v-model="dialog_rep" persistent max-width="600px">

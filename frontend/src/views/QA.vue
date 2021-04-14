@@ -10,11 +10,14 @@
         class="text_question justify-center"
       ></v-text-field>
     </div>
-    <div class="left_QA">
+    
+    <div class="left_QA " >
+      <h2 class="text-center">New questions </h2>
       <Questions n_page="0" :txt_search="searchQuestion" />
     </div>
     <div class="right_QA">
-      <Questions n_page="2" />
+      <h2 class="text-center">Trending questions </h2>
+      <Questions n_page="0" />
     </div>
   </div>
 </template>

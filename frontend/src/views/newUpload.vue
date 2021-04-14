@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="2" outlined color="#faf6d6" class="mt-2 Question">
+    <v-card elevation="2" outlined color="#1548e094" dark class="mt-2 Question">
       <v-card-title class="justify-center">
         Upload your duby duby files!
       </v-card-title>
@@ -56,8 +56,7 @@
         <input type="file" ref="uploadImage" @change="onImageUpload()" />
 
         <v-card-actions class="card-actions">
-          <button text @click="fileUpload()">Upload !</button>
-          <button text @click="downloadIt()">TEST</button>
+          <button dark @click="fileUpload()">Upload !</button>
         </v-card-actions>
       </v-card-text>
     </v-card>

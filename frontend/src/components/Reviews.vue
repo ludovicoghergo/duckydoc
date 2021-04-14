@@ -2,7 +2,7 @@
   <div>
     <v-row v-for="(review, index) in reviews" :key="index">
       <v-col cols="12" class="d-flex justify-center">
-        <v-card color="#f6febd80" class="mt-2 answer">
+        <v-card dark color="#1548e094" class="mt-2 answer">
           <v-card-title class="headline">
             {{ review.user.username }}
             <p class="vote">

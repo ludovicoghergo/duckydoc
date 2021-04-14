@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-card elevation="2" outlined color="#1548e094" class="mt-2 Question">
+    <v-card elevation="2"  dark outlined color="#1548e094" class="mt-2 Question">
       <v-card-title class="justify-center">
-        Pagina di Accesso Login
+        Login
       </v-card-title>
       <div class="googlebutton">
         <GoogleLogin
@@ -14,9 +14,106 @@
         >
       </div>
       <v-card-text class="text-center"
-        ><h3>Perchè effettuare il login?</h3>
-        1. Potrai bla bla bla <br />2. è meglio <br />3. fallo e basta
+        ><h3>Join our wonderful community!</h3>
       </v-card-text>
+
+  <v-row justify="center">
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+       <v-card-title class=" text-center title">
+              Lucia
+            </v-card-title>
+          </v-card>
+    </v-col>
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+      <v-card-title class=" text-center title">
+              Sofia
+            </v-card-title>
+          </v-card>
+    </v-col>
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+       <v-card-title class=" text-center title">
+              Victor
+            </v-card-title>
+          </v-card>
+    </v-col>
+  </v-row>
+  
+  <v-row class="mt-4" justify="center">
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/photo-1552058544-f2b08422138a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=644&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+       <v-card-title class=" text-center title">
+              Igor
+            </v-card-title>
+          </v-card>
+    </v-col>
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+       <v-card-title class=" text-center title">
+              Hector
+            </v-card-title>
+          </v-card>
+    </v-col>
+    <v-col
+      cols="3"
+    >
+    <v-card>
+      <v-img
+        :src="`https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1955&q=80`"
+        aspect-ratio="1.5"
+        class="grey lighten-2"
+      >
+      </v-img>
+       <v-card-title class=" text-center title">
+              Jessie
+            </v-card-title>
+          </v-card>
+    </v-col>
+  </v-row>
+
+
     </v-card>
   </div>
 </template>
@@ -40,6 +137,7 @@ export default {
   methods: {
     ...mapActions(["updatelogin"]),
     onSuccess(googleUser) {
+      var vm = this;
       var googlelogin = googleUser.getBasicProfile();
       console.log("successo");
       this.updatelogin(true);
@@ -87,7 +185,7 @@ export default {
             "name=" + googlelogin.getGivenName() + ";" + expires + ";path=/";
           document.cookie =
             "id=" + response.data.id + ";" + expires + ";path=/";
-          console.log("cookie pookie");
+          vm.goTo("/");
         })
         .catch((error) => {
           if (error.response) {
